@@ -2,200 +2,115 @@
 <html lang="sd">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Sindhi Maza Studio - Kling AI Style</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sindhi Maza Studio - Gemini AI</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#000;color:#fff}
-.top{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:rgba(0,0,0,.85);backdrop-filter:blur(10px)}
-.top b{font-size:17px}.top b span{color:#fe2c55}
-.top a{background:#fe2c55;color:#fff;padding:7px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold}
-.tabs{position:fixed;top:52px;left:0;right:0;z-index:20;display:flex;justify-content:center;gap:20px;padding:10px;background:rgba(0,0,0,.8);font-size:15px}
-.tabs span{color:#aaa;cursor:pointer;padding-bottom:5px}.tabs span.active{color:#fff;border-bottom:2px solid #fe2c55;font-weight:bold}
-.page{display:none;padding:105px 15px 90px;min-height:100vh}
-.page.active{display:block}
-/* FEED */
-.feed{display:flex;flex-direction:column;gap:15px}
-.slide{height:78vh;border-radius:16px;position:relative;overflow:hidden;background:#111}
-.slide img{width:100%;height:100%;object-fit:cover}
-.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.9),transparent 45%)}
-.info{position:absolute;bottom:0;left:0;right:60px;z-index:5;padding:15px}
-.info h3{font-size:15px;line-height:1.4}
-.actions{position:absolute;right:10px;bottom:20px;z-index:6;display:flex;flex-direction:column;gap:14px;text-align:center}
-.act div{width:48px;height:48px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
-.act span{font-size:11px}
-/* AI STUDIO - KLING STYLE */
-.ai-box{background:#1a1a1a;border:1px solid #333;border-radius:16px;padding:16px;margin-bottom:15px}
-.ai-box h2{font-size:18px;margin-bottom:4px}.ai-box p{font-size:13px;color:#aaa}
-textarea{width:100%;background:#222;border:1px solid #333;color:#fff;padding:12px;border-radius:12px;margin-top:12px;font-size:14px;min-height:80px;outline:none;resize:none}
-select,input[type=file]{width:100%;background:#222;border:1px solid #333;color:#fff;padding:12px;border-radius:12px;margin-top:10px;outline:none}
-.upload{border:2px dashed #444;border-radius:12px;padding:20px;text-align:center;margin-top:10px;cursor:pointer}
-.effects{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
-.eff{background:#222;border:1px solid #333;border-radius:12px;padding:12px 5px;text-align:center;cursor:pointer;font-size:13px}
-.eff.active{background:#fe2c55;border-color:#fe2c55}
-.eff div{font-size:26px}
-.opts{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.opts button{background:#222;color:#fff;border:1px solid #333;padding:8px 14px;border-radius:20px;cursor:pointer}
-.opts button.active{background:#fff;color:#000}
-.gen{width:100%;background:linear-gradient(90deg,#fe2c55,#ff7a00);border:none;color:#fff;padding:15px;border-radius:30px;font-size:16px;font-weight:bold;margin-top:15px;cursor:pointer}
-.progress{display:none;background:#222;border-radius:10px;overflow:hidden;margin-top:12px;height:10px}
-.progress div{height:100%;background:#fe2c55;width:0%;transition:.3s}
-.result{display:none;margin-top:15px;border-radius:16px;overflow:hidden;position:relative}
-.result img{width:100%;height:300px;object-fit:cover;display:block}
-.result div{position:absolute;bottom:0;left:0;right:0;padding:12px;background:linear-gradient(to top,rgba(0,0,0,.9),transparent)}
-.gallery{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
-.gallery img{width:100%;height:110px;object-fit:cover;border-radius:10px}
-.bottom{position:fixed;bottom:0;left:0;right:0;z-index:30;background:#000;display:flex;justify-content:space-around;padding:12px 0;border-top:1px solid #222;font-size:12px}
-.bottom div{text-align:center;color:#aaa;cursor:pointer}.bottom div.active{color:#fff;font-weight:bold}
-.credits{background:linear-gradient(90deg,#7c3aed,#fe2c55);padding:10px;border-radius:12px;text-align:center;font-size:13px;margin-bottom:15px}
+*{box-sizing:border-box;font-family:sans-serif}
+body{margin:0;background:#0f0f0f;color:#fff;padding:15px}
+h1{text-align:center;color:#ff2d55}
+.box{background:#1c1c1e;border-radius:15px;padding:15px;margin-bottom:15px}
+input,select,textarea{width:100%;padding:12px;border-radius:10px;border:none;margin:8px 0;background:#2c2c2e;color:#fff;font-size:16px}
+button{width:100%;padding:14px;border:none;border-radius:12px;background:#ff2d55;color:#fff;font-size:18px;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.5}
+.videoBox{width:100%;aspect-ratio:9/16;background:#000;border-radius:15px;overflow:hidden;position:relative;margin-top:10px}
+.videoBox img{width:100%;height:100%;object-fit:cover;animation:zoom 6s infinite alternate}
+@keyframes zoom{from{transform:scale(1) translateX(0)}to{transform:scale(1.15) translateX(-10px)}}
+.hug img{animation:hug 4s infinite alternate}
+@keyframes hug{from{transform:scale(1)}to{transform:scale(1.08)}}
+.tag{display:inline-block;background:#333;padding:5px 10px;border-radius:20px;margin:3px;font-size:13px}
+#status{color:#ffd60a;text-align:center;margin:10px}
 </style>
 </head>
 <body>
 
-<div class="top"><b>Sindhi Maza <span>Studio</span> ✨ AI</b><a href="#" onclick="showPage('ai')">＋ Create</a></div>
-<div class="tabs">
-<span id="tab-feed" class="active" onclick="showPage('feed')">🎬 For You</span>
-<span id="tab-ai" onclick="showPage('ai')">✨ AI Studio - Kling</span>
-<span onclick="showPage('my')">👤 My Videos</span>
+<h1>✨ Sindhi Maza Studio - Gemini AI</h1>
+<p style="text-align:center">100% Free - Gemini Key سان</p>
+
+<div class="box">
+<h3>🔑 1. Gemini Key لڳايو</h3>
+<input type="password" id="apiKey" placeholder="AIza... پنهنجي Key هتي پيسٽ ڪريو">
+<button onclick="saveKey()" style="background:#34c759">Key محفوظ ڪريو</button>
+<p id="keyStatus" style="font-size:13px;color:#aaa">Key صرف تنهنجي موبائل ۾ رهندي، ڪنهن کي نه ويندي</p>
 </div>
 
-<!-- FEED PAGE -->
-<div id="page-feed" class="page active">
-<div class="feed" id="feed"></div>
-</div>
-
-<!-- AI STUDIO - KLING FUNCTIONS -->
-<div id="page-ai" class="page">
-<div class="credits">🎁 Free Credits: <b id="credits">100</b> • Roz 10 Free Credits Milanda!</div>
-
-<div class="ai-box">
-<h2>✨ Kling AI - Text to Video</h2>
-<p>Likho - AI Video Banaeendo!</p>
-<textarea id="prompt" placeholder="Misaal: Sindhi Munda Dadu me dance kare payo, colorful kapra, sunset..."></textarea>
-<select id="style">
-<option>🎬 Cinematic - Film Jehro</option>
-<option>😂 Comedy - Funny</option>
-<option>🎵 Sindhi Song - Music Video</option>
-<option>🌄 Village - Dadu / Sindh</option>
-<option>💃 Dance - Viral Dance</option>
-<option>💖 Love Story - Drama</option>
+<div class="box">
+<h3>🎬 2. وڊيو ٺاهيو</h3>
+<textarea id="prompt" rows="2" placeholder="مثال: Sindhi Munda Dadu me dance kare payo"></textarea>
+<select id="effect">
+<option value="">Effect چونڊيو - Hug</option>
+<option value="hug">❤️ Hug Effect</option>
+<option value="">💃 Dance Effect</option>
+<option value="">😘 Kiss Effect</option>
+<option value="">🎉 Celebration</option>
 </select>
-<div class="opts">
-<button class="active" onclick="setOpt(this,'dur')">5 Sec</button>
-<button onclick="setOpt(this,'dur')">10 Sec</button>
-<button onclick="setOpt(this,'dur')">15 Sec</button>
-</div>
-<div class="opts">
-<button class="active" onclick="setOpt(this,'ratio')">9:16 TikTok</button>
-<button onclick="setOpt(this,'ratio')">16:9 YouTube</button>
-<button onclick="setOpt(this,'ratio')">1:1 Insta</button>
-</div>
-<button class="gen" onclick="generate('text')">✨ Generate Video - 10 Credits</button>
-<div class="progress" id="prog1"><div id="bar1"></div></div>
-<div class="result" id="res1"><img id="resImg1"><div><b id="resTitle1"></b><p>✅ Video Tayyar Aahe! Download / Share Kayo</p></div></div>
-</div>
-
-<div class="ai-box">
-<h2>🖼️ Image to Video - Kling</h2>
-<p>Tasveer Diyo - AI Uhe Khilaaeendo!</p>
-<div class="upload" onclick="document.getElementById('file').click()">📸 Tasveer Chuno - Click Karo<br><small>JPG / PNG</small></div>
-<input type="file" id="file" hidden accept="image/*" onchange="previewImg(event)">
-<img id="preview" style="display:none;width:100%;height:180px;object-fit:cover;border-radius:12px;margin-top:10px">
-<textarea placeholder="Tasveer me cha thiye? Misaal: Munda muskuraye, hath hilaye..."></textarea>
-<p style="margin-top:12px;font-weight:bold">🔥 Viral AI Effects:</p>
-<div class="effects">
-<div class="eff active" onclick="selEff(this)">🤗<br>Hug</div>
-<div class="eff" onclick="selEff(this)">😘<br>Kiss</div>
-<div class="eff" onclick="selEff(this)">💃<br>Dance</div>
-<div class="eff" onclick="selEff(this)">🥊<br>Fight</div>
-<div class="eff" onclick="selEff(this)">😂<br>Funny Face</div>
-<div class="eff" onclick="selEff(this)">👻<br>Ghost</div>
-<div class="eff" onclick="selEff(this)">🦸<br>Superhero</div>
-<div class="eff" onclick="selEff(this)">👰<br>Bride</div>
-<div class="eff" onclick="selEff(this)">🎤<br>Singer</div>
-</div>
-<button class="gen" onclick="generate('img')">🎬 Image Se Video Banao</button>
-<div class="progress" id="prog2"><div id="bar2"></div></div>
-<div class="result" id="res2"><img id="resImg2"><div><b>✨ AI Video Tayyar!</b><p>Image to Video - Kling Style</p></div></div>
-</div>
-
-<div class="ai-box">
-<h2>🎤 AI Avatar - Bolandhar Tasveer</h2>
-<p>Tasveer + Awaz = Bolandhar Video!</p>
-<textarea placeholder="Tasveer cha chawandi? Misaal: Assalam O Alaikum, Sindhi Maza Studio me Khush Aamdeed..."></textarea>
-<select><option>🗣️ Munda Jo Awaz</option><option>🗣️ Chokri Jo Awaz</option><option>🗣️ Sindhi Awaz</option><option>🗣️ Funny Awaz</option></select>
-<button class="gen" onclick="generate('avatar')">🎤 Avatar Video Banao</button>
-</div>
-
-<div class="ai-box">
-<h2>🔥 Trending AI Templates</h2>
-<div class="gallery">
-<img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400" onclick="useTemplate('Hug')">
-<img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400" onclick="useTemplate('Dance')">
-<img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400" onclick="useTemplate('Bride')">
-<img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400" onclick="useTemplate('Kiss')">
-<img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400" onclick="useTemplate('Superhero')">
-<img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400" onclick="useTemplate('Singer')">
-</div>
-<p style="margin-top:8px;text-align:center;color:#aaa">Template Te Click Kayo - Video Banji Wendi!</p>
+<button id="genBtn" onclick="generate()">✨ Generate Video - Free</button>
+<p id="status"></p>
+<div class="videoBox" id="videoBox">
+<p style="text-align:center;padding-top:120px;color:#888">هتي تنهنجي وڊيو ايندي</p>
 </div>
 </div>
 
-<!-- MY VIDEOS -->
-<div id="page-my" class="page">
-<div class="ai-box"><h2>👤 My Videos</h2><p>Tuhinjon Banayal AI Videos Hitey Acheendiyon</p><div class="gallery" id="myGallery"></div><p id="empty" style="text-align:center;padding:20px;color:#aaa">Abhi Koi Video Nahi - AI Studio Me Banao!</p></div>
-</div>
-
-<div class="bottom">
-<div class="active" onclick="showPage('feed')">🏠<br>Home</div>
-<div onclick="showPage('ai')">✨<br>AI Studio</div>
-<div style="font-size:24px;color:#fe2c55" onclick="showPage('ai')">＋</div>
-<div>💬<br>Inbox</div>
-<div onclick="showPage('my')">👤<br>Me</div>
+<div class="box">
+<h3>📁 My Videos</h3>
+<div id="myVideos"></div>
 </div>
 
 <script>
-let videos=[
-{title:"Dadu Jo Maza 😂 | Sindhi Comedy Short #1",user:"Sindhi Maza",views:"1.2M",img:"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80"},
-{title:"New Sindhi Song 2026 🎵 | Dil Jo Dard",user:"Sindhi Maza",views:"856K",img:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80"},
-{title:"Sindhi Funny Village 😆 | Chacha Jo Kamaal",user:"Sindhi Maza",views:"2.1M",img:"https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80"},
-];
-let feed=document.getElementById('feed');
-videos.forEach(v=>{
-feed.innerHTML+=`<div class="slide"><img src="${v.img}"><div class="info"><b>@${v.user}</b><h3 style="margin-top:6px">${v.title}</h3><p>🎵 Original Sound • ${v.views} views</p></div><div class="actions"><div class="act"><div>❤️</div><span>125K</span></div><div class="act"><div>💬</div><span>2K</span></div><div class="act"><div>↗️</div><span>Share</span></div></div></div>`;
-});
-function showPage(p){
-document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-document.querySelectorAll('.tabs span').forEach(x=>x.classList.remove('active'));
-document.getElementById('page-'+p).classList.add('active');
-if(p=='feed') document.getElementById('tab-feed').classList.add('active');
-if(p=='ai') document.getElementById('tab-ai').classList.add('active');
-window.scrollTo(0,0);
+let myVideos = JSON.parse(localStorage.getItem('myVideos')||'[]');
+showVideos();
+
+function saveKey(){
+  let k = document.getElementById('apiKey').value.trim();
+  if(!k){ alert('پهرين Key پيسٽ ڪريو'); return; }
+  localStorage.setItem('geminiKey', k);
+  document.getElementById('keyStatus').innerText = '✅ Key محفوظ ٿي وئي! هاڻي وڊيو ٺاهي سگهين ٿو';
+  alert('Key محفوظ ٿي وئي!');
 }
-function setOpt(b,g){b.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
-function selEff(el){document.querySelectorAll('.eff').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
-function previewImg(e){let r=new FileReader();r.onload=function(){let im=document.getElementById('preview');im.src=r.result;im.style.display='block'};r.readAsDataURL(e.target.files[0])}
-function useTemplate(name){showPage('ai');document.getElementById('prompt').value=name+' Effect - Sindhi Style Video Banao';alert('✨ '+name+' Template Select Thi Wiyo!\\nHane Generate Te Click Kayo!')}
-let credits=100;
-function generate(type){
-let prompt=document.getElementById('prompt').value||'Sindhi Maza Studio - Viral Video';
-if(credits<10){alert('❌ Credits Khatam! Kal Wapas Ajo - Roz 10 Free Milanda!');return}
-credits-=10;document.getElementById('credits').innerText=credits;
-let prog=document.getElementById(type=='text'?'prog1':'prog2');
-let bar=document.getElementById(type=='text'?'bar1':'bar2');
-let res=document.getElementById(type=='text'?'res1':'res2');
-prog.style.display='block';let w=0;
-let iv=setInterval(()=>{
-w+=10;bar.style.width=w+'%';
-if(w>=100){clearInterval(iv);prog.style.display='none';res.style.display='block';
-let img=type=='text'?document.getElementById('resImg1'):document.getElementById('resImg2');
-let pics=["https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800","https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800","https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800"];
-img.src=pics[Math.floor(Math.random()*pics.length)];
-if(type=='text') document.getElementById('resTitle1').innerText='🎬 '+prompt;
-document.getElementById('empty').style.display='none';
-document.getElementById('myGallery').innerHTML+='<img src="'+img.src+'">';
-alert('✅ Video Tayyar Thi Wiyi!\\n\\n'+prompt+'\\n\\nHane My Videos Me Achi Wiyi!');}
-},200);
+if(localStorage.getItem('geminiKey')){
+  document.getElementById('apiKey').value = localStorage.getItem('geminiKey');
+  document.getElementById('keyStatus').innerText = '✅ Key اڳ ۾ ئي لڳل آهي';
+}
+
+async function generate(){
+  let key = localStorage.getItem('geminiKey');
+  if(!key){ alert('پهرين مٿي Gemini Key لڳايو!'); return; }
+  let prompt = document.getElementById('prompt').value.trim();
+  if(!prompt) prompt = 'Sindhi boy dancing in Dadu, Sindh';
+  let btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  document.getElementById('status').innerText = '⏳ Gemini Prompt ٺاهي رهيو آهي...';
+
+  let enhanced = prompt;
+  try{
+    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({contents:[{parts:[{text:`Make this a beautiful cinematic AI video prompt in English, 1 line: ${prompt} in Sindh, Pakistan, colorful, realistic`}]}]})
+    });
+    let data = await res.json();
+    if(data.candidates && data.candidates[0].content.parts[0].text){
+      enhanced = data.candidates[0].content.parts[0].text;
+    }
+  }catch(e){ console.log(e); }
+
+  document.getElementById('status').innerText = '🎬 وڊيو ٺهي رهي آهي...';
+  let imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhanced)}?width=720&height=1280&seed=${Date.now()}&nologo=true`;
+  
+  let effect = document.getElementById('effect').value;
+  let box = document.getElementById('videoBox');
+  box.className = 'videoBox ' + effect;
+  box.innerHTML = `<img src="${imgUrl}" onload="document.getElementById('status').innerText='✅ وڊيو تيار آهي! Gemini سان ٺهي!'">`;
+  
+  myVideos.unshift({prompt: enhanced, img: imgUrl, time: new Date().toLocaleString()});
+  localStorage.setItem('myVideos', JSON.stringify(myVideos.slice(0,10)));
+  showVideos();
+  btn.disabled = false;
+}
+
+function showVideos(){
+  let div = document.getElementById('myVideos');
+  if(myVideos.length==0){ div.innerHTML='اڃا ڪا وڊيو ناهي'; return; }
+  div.innerHTML = myVideos.map(v=>`<div style="display:flex;gap:10px;margin-bottom:10px;background:#2c2c2e;padding:8px;border-radius:10px"><img src="${v.img}" style="width:60px;height:90px;object-fit:cover;border-radius:8px"><div><b>${v.prompt.slice(0,60)}</b><br><small>${v.time}</small><br><a href="${v.img}" download style="color:#ff2d55">Download</a></div></div>`).join('');
 }
 </script>
 </body>
