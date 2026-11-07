@@ -3,114 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sindhi Maza Studio - Gemini AI</title>
+<title>Sindhi Maza Studio - Cinema AI</title>
 <style>
-*{box-sizing:border-box;font-family:sans-serif}
-body{margin:0;background:#0f0f0f;color:#fff;padding:15px}
-h1{text-align:center;color:#ff2d55}
-.box{background:#1c1c1e;border-radius:15px;padding:15px;margin-bottom:15px}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:none;margin:8px 0;background:#2c2c2e;color:#fff;font-size:16px}
-button{width:100%;padding:14px;border:none;border-radius:12px;background:#ff2d55;color:#fff;font-size:18px;font-weight:bold;cursor:pointer}
+*{box-sizing:border-box}body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;padding:12px}
+h1{text-align:center;color:#ffcc00;font-size:22px}
+.box{background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:12px}
+input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#222;color:#fff;font-size:15px;margin-top:6px}
+button{width:100%;padding:14px;border:0;border-radius:12px;background:#ffcc00;color:#000;font-weight:900;font-size:17px;margin-top:10px}
 button:disabled{opacity:.5}
-.videoBox{width:100%;aspect-ratio:9/16;background:#000;border-radius:15px;overflow:hidden;position:relative;margin-top:10px}
-.videoBox img{width:100%;height:100%;object-fit:cover;animation:zoom 6s infinite alternate}
-@keyframes zoom{from{transform:scale(1) translateX(0)}to{transform:scale(1.15) translateX(-10px)}}
-.hug img{animation:hug 4s infinite alternate}
-@keyframes hug{from{transform:scale(1)}to{transform:scale(1.08)}}
-.tag{display:inline-block;background:#333;padding:5px 10px;border-radius:20px;margin:3px;font-size:13px}
-#status{color:#ffd60a;text-align:center;margin:10px}
+img,video,canvas{width:100%;border-radius:12px;margin-top:10px;background:#000}
+.small{font-size:13px;color:#aaa}
+.success{color:#00ff88}.error{color:#ff5555}
+.chip{display:inline-block;background:#333;padding:6px 10px;border-radius:20px;margin:3px;font-size:13px;cursor:pointer}
+.chip.active{background:#ffcc00;color:#000;font-weight:bold}
 </style>
 </head>
 <body>
-
-<h1>✨ Sindhi Maza Studio - Gemini AI</h1>
-<p style="text-align:center">100% Free - Gemini Key سان</p>
+<h1>🎬 Sindhi Maza Studio - CINEMA AI</h1>
 
 <div class="box">
-<h3>🔑 1. Gemini Key لڳايو</h3>
-<input type="password" id="apiKey" placeholder="AIza... پنهنجي Key هتي پيسٽ ڪريو">
-<button onclick="saveKey()" style="background:#34c759">Key محفوظ ڪريو</button>
-<p id="keyStatus" style="font-size:13px;color:#aaa">Key صرف تنهنجي موبائل ۾ رهندي، ڪنهن کي نه ويندي</p>
+<b>🔑 1. Gemini Key</b>
+<input id="apiKey" type="password" placeholder="AIza... پيسٽ ڪر">
+<button onclick="saveKey()" style="background:#00cc66;color:#fff">Key محفوظ ڪريو</button>
+<div id="keyMsg" class="small"></div>
+<div class="small">Key ناهي؟ <b>Google AI Studio</b> ۾ Free ٺاهي سگهين ٿو.</div>
 </div>
 
 <div class="box">
-<h3>🎬 2. وڊيو ٺاهيو</h3>
-<textarea id="prompt" rows="2" placeholder="مثال: Sindhi Munda Dadu me dance kare payo"></textarea>
-<select id="effect">
-<option value="">Effect چونڊيو - Hug</option>
-<option value="hug">❤️ Hug Effect</option>
-<option value="">💃 Dance Effect</option>
-<option value="">😘 Kiss Effect</option>
-<option value="">🎉 Celebration</option>
-</select>
-<button id="genBtn" onclick="generate()">✨ Generate Video - Free</button>
-<p id="status"></p>
-<div class="videoBox" id="videoBox">
-<p style="text-align:center;padding-top:120px;color:#888">هتي تنهنجي وڊيو ايندي</p>
+<b>🎥 2. سينيما Scene لک</b>
+<textarea id="prompt" rows="3">A 25 year old Sindhi man in white shalwar kameez and Sindhi topi, dancing joyfully at a colorful Sindhi wedding in Dadu village, night lights</textarea>
+<div style="margin-top:8px"><b>سينيما Style چونڊيو:</b></div>
+<div id="styles">
+<span class="chip active" data-s="cinematic film still, 35mm, dramatic lighting, shallow depth of field, teal and orange color grading, 2.39:1 widescreen">🎬 سينيما</span>
+<span class="chip" data-s="Bollywood movie scene, vibrant colors, dramatic lighting, film grain">💃 بالي ووڊ</span>
+<span class="chip" data-s="epic drone shot, golden hour, cinematic atmosphere, high detail">🚁 ڊرون</span>
+<span class="chip" data-s="emotional drama scene, soft light, cinematic bokeh">❤️ ڊرامو</span>
 </div>
+<label>وڊيو جو Time</label>
+<select id="duration"><option value="5">5 سيڪنڊ</option><option value="10" selected>10 سيڪنڊ</option><option value="15">15 سيڪنڊ</option></select>
+<button id="genBtn" onclick="generate()">🎬 سينيما وڊيو ٺاهيو</button>
+<div id="status"></div>
+<canvas id="canvas" width="1280" height="720" style="display:none"></canvas>
+<video id="videoPlayer" controls style="display:none"></video>
+<a id="dlBtn" style="display:none" download="sindhi-cinema-video.webm"><button style="background:#ff0066;color:#fff">⬇️ وڊيو Download ڪريو</button></a>
 </div>
 
 <div class="box">
-<h3>📁 My Videos</h3>
-<div id="myVideos"></div>
+<b>📁 My Cinema Videos</b>
+<div id="history"></div>
 </div>
 
 <script>
-let myVideos = JSON.parse(localStorage.getItem('myVideos')||'[]');
-showVideos();
-
+let selectedStyle = document.querySelector('.chip.active').dataset.s;
+let currentImage = null;
+document.querySelectorAll('.chip').forEach(c=>{
+  c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');selectedStyle=c.dataset.s;}
+});
+let saved = localStorage.getItem('gemini_key');
+if(saved) document.getElementById('apiKey').value=saved;
 function saveKey(){
-  let k = document.getElementById('apiKey').value.trim();
-  if(!k){ alert('پهرين Key پيسٽ ڪريو'); return; }
-  localStorage.setItem('geminiKey', k);
-  document.getElementById('keyStatus').innerText = '✅ Key محفوظ ٿي وئي! هاڻي وڊيو ٺاهي سگهين ٿو';
-  alert('Key محفوظ ٿي وئي!');
+  let k=document.getElementById('apiKey').value.trim();
+  if(!k) return alert('Key لک!');
+  localStorage.setItem('gemini_key',k);
+  document.getElementById('keyMsg').innerHTML='<span class="success">✅ Key محفوظ ٿي وئي!</span>';
 }
-if(localStorage.getItem('geminiKey')){
-  document.getElementById('apiKey').value = localStorage.getItem('geminiKey');
-  document.getElementById('keyStatus').innerText = '✅ Key اڳ ۾ ئي لڳل آهي';
-}
-
 async function generate(){
-  let key = localStorage.getItem('geminiKey');
-  if(!key){ alert('پهرين مٿي Gemini Key لڳايو!'); return; }
-  let prompt = document.getElementById('prompt').value.trim();
-  if(!prompt) prompt = 'Sindhi boy dancing in Dadu, Sindh';
-  let btn = document.getElementById('genBtn');
-  btn.disabled = true;
-  document.getElementById('status').innerText = '⏳ Gemini Prompt ٺاهي رهيو آهي...';
+  let key = document.getElementById('apiKey').value.trim() || localStorage.getItem('gemini_key');
+  if(!key) return alert('پهرين Key لڳاءِ!');
+  localStorage.setItem('gemini_key',key);
+  let userPrompt = document.getElementById('prompt').value.trim();
+  if(!userPrompt) return alert('Scene لک!');
+  let btn=document.getElementById('genBtn'); btn.disabled=true;
+  document.getElementById('status').innerHTML='⏳ سينيما ٺهي رهيو آهي... 15-25 سيڪنڊ ترس...';
+  
+  // Cinema Prompt - Gemini کي سينيما جهڙو ٻڌائڻ
+  let finalPrompt = `Cinematic movie scene, ${userPrompt}, ${selectedStyle}, ultra realistic, 8k, professional film photography, dramatic shadows, rich colors, no text, no watermark, no child, adult man only, 25 year old`;
 
-  let enhanced = prompt;
   try{
-    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{
+    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${key}`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{parts:[{text:`Make this a beautiful cinematic AI video prompt in English, 1 line: ${prompt} in Sindh, Pakistan, colorful, realistic`}]}]})
+      body: JSON.stringify({contents:[{parts:[{text: finalPrompt}]}], generationConfig:{responseModalities:["TEXT","IMAGE"], imageConfig:{aspectRatio:"16:9"}}})
     });
     let data = await res.json();
-    if(data.candidates && data.candidates[0].content.parts[0].text){
-      enhanced = data.candidates[0].content.parts[0].text;
-    }
-  }catch(e){ console.log(e); }
-
-  document.getElementById('status').innerText = '🎬 وڊيو ٺهي رهي آهي...';
-  let imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(enhanced)}?width=720&height=1280&seed=${Date.now()}&nologo=true`;
-  
-  let effect = document.getElementById('effect').value;
-  let box = document.getElementById('videoBox');
-  box.className = 'videoBox ' + effect;
-  box.innerHTML = `<img src="${imgUrl}" onload="document.getElementById('status').innerText='✅ وڊيو تيار آهي! Gemini سان ٺهي!'">`;
-  
-  myVideos.unshift({prompt: enhanced, img: imgUrl, time: new Date().toLocaleString()});
-  localStorage.setItem('myVideos', JSON.stringify(myVideos.slice(0,10)));
-  showVideos();
-  btn.disabled = false;
+    if(data.error) throw new Error(data.error.message);
+    let part = data.candidates[0].content.parts.find(p=>p.inlineData);
+    if(!part) throw new Error('تصوير نه ملي - ٻيهر ڪوشش ڪر');
+    let b64 = part.inlineData.data;
+    let img = new Image();
+    img.onload = ()=>{ currentImage=img; makeCinemaVideo(); };
+    img.src = 'data:image/png;base64,'+b64;
+  }catch(e){
+    document.getElementById('status').innerHTML='<span class="error">❌ '+e.message+'<br>جيڪڏهن Model نه ملي ته Key نئين ٺاهيو يا 1 منٽ ترسي ٻيهر ڪر.</span>';
+    btn.disabled=false;
+  }
 }
 
-function showVideos(){
-  let div = document.getElementById('myVideos');
-  if(myVideos.length==0){ div.innerHTML='اڃا ڪا وڊيو ناهي'; return; }
-  div.innerHTML = myVideos.map(v=>`<div style="display:flex;gap:10px;margin-bottom:10px;background:#2c2c2e;padding:8px;border-radius:10px"><img src="${v.img}" style="width:60px;height:90px;object-fit:cover;border-radius:8px"><div><b>${v.prompt.slice(0,60)}</b><br><small>${v.time}</small><br><a href="${v.img}" download style="color:#ff2d55">Download</a></div></div>`).join('');
+function makeCinemaVideo(){
+  let dur = parseInt(document.getElementById('duration').value);
+  let canvas=document.getElementById('canvas'); let ctx=canvas.getContext('2d');
+  canvas.style.display='block';
+  let stream = canvas.captureStream(30);
+  let rec = new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});
+  let chunks=[];
+  rec.ondataavailable=e=>chunks.push(e.data);
+  rec.onstop=()=>{
+    let blob=new Blob(chunks,{type:'video/webm'});
+    let url=URL.createObjectURL(blob);
+    let v=document.getElementById('videoPlayer'); v.src=url; v.style.display='block'; v.play();
+    let dl=document.getElementById('dlBtn'); dl.href=url; dl.style.display='block';
+    document.getElementById('status').innerHTML='<span class="success">✅ سينيما وڊيو تيار آهي! هيٺ Download ڪر!</span>';
+    document.getElementById('genBtn').disabled=false;
+    // history
+    let h=document.getElementById('history');
+    h.innerHTML=`<div style="margin:8px 0"><b>${document.getElementById('prompt').value.slice(0,60)}</b><br><a href="${url}" download="cinema.webm" style="color:#ff0066">Download</a></div>`+h.innerHTML;
+  };
+  rec.start();
+  let start=performance.now();
+  function frame(now){
+    let t=(now-start)/1000; let p=Math.min(t/dur,1);
+    // Cinema Zoom + Pan - سينيما جهڙو Slow Zoom
+    let zoom = 1 + p*0.25;
+    let w=canvas.width/zoom, h=canvas.height/zoom;
+    let sx=(canvas.width-w)/2 + Math.sin(p*Math.PI)*20;
+    let sy=(canvas.height-h)/2;
+    // Cover fit
+    let iw=currentImage.width, ih=currentImage.height;
+    let scale=Math.max(canvas.width/iw, canvas.height/ih);
+    let dw=iw*scale, dh=ih*scale;
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    // Draw with zoom
+    let zw=dw*zoom, zh=dh*zoom;
+    ctx.drawImage(currentImage,(canvas.width-zw)/2 + Math.sin(p*2)*15,(canvas.height-zh)/2,zw,zh);
+    // Cinema Black Bars - مٿي هيٺ ڪارا پٽا
+    ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,45); ctx.fillRect(0,canvas.height-45,canvas.width,45);
+    // Title
+    ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='bold 28px Arial'; ctx.textAlign='center';
+    ctx.fillText('SINDHI MAZA STUDIO',canvas.width/2,canvas.height-12);
+    if(p<1) requestAnimationFrame(frame);
+    else rec.stop();
+  }
+  requestAnimationFrame(frame);
 }
 </script>
 </body>
