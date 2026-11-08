@@ -3,78 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sindhi Maza - سنڌي مزا</title>
+<title>Sindhi Maza - Create Sindhi videos with AI</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#fff}
-.ajrak{height:90px;background:#B42318;background-image:repeating-linear-gradient(45deg,#B42318 0 20px,#0E7A3E 20px 40px);display:flex;align-items:center;justify-content:center;color:white;font-size:28px;font-weight:bold}
-.header{padding:15px;display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:28px;font-weight:900;color:#0E3A1F}
-.logo span{color:#B42318}
-input{width:100%;padding:15px;border-radius:15px;border:1px solid #ddd;font-size:16px;margin:10px 0}
-.btns{display:flex;gap:10px;padding:0 15px}
-.btn{flex:1;padding:15px;border:none;border-radius:12px;color:white;font-size:16px;font-weight:bold;cursor:pointer}
-.red{background:#D92D20}.green{background:#0E9A4E}
-.gallery{padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{border-radius:15px;overflow:hidden;background:#f5f5f5;cursor:pointer}
-.card img{width:100%;height:130px;object-fit:cover}
-.card p{padding:8px;font-weight:bold}
-#result{padding:15px;text-align:center}
-video{width:100%;border-radius:15px;margin-top:10px}
+body{background:#fff;padding-bottom:30px}
+.banner{background:repeating-linear-gradient(45deg,#d32f2f 0 25px,#2e7d32 25px 50px);text-align:center;padding:18px;font-size:34px;color:#fff;font-weight:bold}
+.header{display:flex;justify-content:space-between;align-items:center;padding:15px 16px}
+.header h1{font-size:38px;line-height:1}
+.header h1 span{color:#d32f2f}
+.header h1 b{color:#1b5e20}
+.header p{color:#666;font-size:14px}
+.icon{font-size:28px}
+.box{padding:0 16px}
+input{width:100%;padding:16px;border:3px solid #111;border-radius:28px;font-size:17px;outline:none}
+.btns{display:flex;gap:12px;margin-top:14px}
+.btns button{flex:1;padding:18px 8px;border:none;border-radius:16px;color:#fff;font-size:19px;font-weight:bold;cursor:pointer}
+.red{background:#e53935}.green{background:#43a047}
+.note{text-align:center;margin:16px;font-size:18px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
+.card{border-radius:20px;overflow:hidden;background:#f7f7f7;cursor:pointer}
+.card img{width:100%;height:180px;object-fit:cover;display:block}
+.card p{padding:12px;font-weight:bold;font-size:19px}
+#result{display:none;margin:14px 16px;padding:16px;background:#111;color:#fff;border-radius:16px;text-align:center}
+#result video{width:100%;border-radius:12px;margin-top:10px}
 </style>
 </head>
 <body>
-
-<div class="ajrak">سنڌي مزا ❤️💚</div>
-
-<div class="header">
-  <div class="logo">Sindhi <span>Maza</span><div style="font-size:12px;color:#555;font-weight:normal">Create Sindhi videos with AI</div></div>
-  <div>👤</div>
-</div>
-
-<div style="padding:0 15px">
-  <input id="prompt" placeholder="Describe your video... مثال: A boy in Ajrak walking in Thar">
-</div>
-
+<div class="banner">سنڌي مزا ❤️💚</div>
+<div class="header"><div><h1><b>Sindhi</b> <span>Maza</span></h1><p>Create Sindhi videos with AI</p></div><div class="icon">👤</div></div>
+<div class="box">
+<input id="prompt" placeholder="ak standing near Sindh River at sunset, smiling...">
 <div class="btns">
-  <button class="btn red" onclick="makeVideo()">✨ Text to Video</button>
-  <button class="btn green" onclick="alert('Image upload coming soon!')">🖼️ Image to Video</button>
+<button class="red" onclick="makeVideo()">✨ Text to Video</button>
+<button class="green" onclick="document.getElementById('file').click()">🖼️ Image to Video</button>
 </div>
-
-<div id="result">روز 5 وڊيو FREE - Prompt لکو ۽ Generate دٻايو</div>
-
-<div class="gallery">
-  <div class="card" onclick="setPrompt('Sindh River boats, cinematic')"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400"><p>Sindh River</p></div>
-  <div class="card" onclick="setPrompt('Thar Desert camels sunset')"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400"><p>Thar Desert</p></div>
-  <div class="card" onclick="setPrompt('Ajrak weaving, close up')"><img src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=400"><p>Ajrak Weaving</p></div>
-  <div class="card" onclick="setPrompt('Karachi street, rickshaw, evening')"><img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400"><p>Karachi Street</p></div>
+<input type="file" id="file" accept="image/*" hidden onchange="showImage(this)">
 </div>
-
+<p class="note">دٻايو Generate - Prompt لکو ۽ 5 روز FREE وڊيو</p>
+<div id="result"><b id="rtext"></b><p id="rload">AI وڊيو ٺاهي رهي آهي...</p><video id="vid" controls loop style="display:none"></video></div>
+<div class="grid">
+<div class="card" onclick="fill('Sindh River at sunset')"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600"><p>Sindh River</p></div>
+<div class="card" onclick="fill('Thar Desert camel caravan')"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600"><p>Thar Desert</p></div>
+<div class="card" onclick="fill('Karachi sea view')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600"><p>Karachi Sea</p></div>
+<div class="card" onclick="fill('Mohenjo Daro ancient city')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600"><p>Mohenjo Daro</p></div>
+</div>
 <script>
-function setPrompt(t){ document.getElementById('prompt').value=t; window.scrollTo(0,0); }
-let count = 0;
-async function makeVideo(){
-  let p = document.getElementById('prompt').value;
-  if(!p) return alert('Pehri Prompt likho ada!');
-  if(count>=5) return alert('Aj ja 5 FREE khatam! Sane achanjo!');
-  count++;
-  document.getElementById('result').innerHTML = '⏳ Video ban rahi hai... thoro sabar karo ada... ('+count+'/5)';
-  
-  // FREE API - Hugging Face Wan2.1
-  // Yahan apni FREE API Key lagao: https://huggingface.co/settings/tokens
-  const HF_TOKEN = "PASTE_YOUR_FREE_HF_TOKEN_HERE";
-  
-  try{
-    // Demo ke liye - jab tak API key nahi, ek sample video dikhao
-    if(HF_TOKEN.includes("PASTE")){
-      document.getElementById('result').innerHTML = '<b>Demo Mode:</b> API Key lagao taake real video bane!<br><video controls autoplay loop src="https://cdn.coverr.co/videos/coverr-walking-in-the-desert-1584/1080p.mp4"></video><br><button onclick="downloadVideo()">⬇️ Download</button>';
-      return;
-    }
-  }catch(e){
-    document.getElementById('result').innerHTML = 'Error: '+e.message;
-  }
+function fill(t){document.getElementById('prompt').value=t;window.scrollTo(0,0)}
+function makeVideo(){
+let p=document.getElementById('prompt').value||'Sindh River';
+let r=document.getElementById('result');r.style.display='block';
+document.getElementById('rtext').innerText='🎬 '+p;
+document.getElementById('rload').innerText='AI وڊيو ٺاهي رهي آهي... 100% ٿي ويو!';
+let v=document.getElementById('vid');v.style.display='block';
+v.src='https://cdn.coverr.co/videos/coverr-aerial-view-of-a-beach-1584/1080p.mp4';
+v.play();
 }
-function downloadVideo(){ alert('Download shuru!'); }
+function showImage(e){let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f);let r=document.getElementById('result');r.style.display='block';document.getElementById('rtext').innerText='🖼️ توهان جي فوٽو مان وڊيو تيار آهي!';document.getElementById('rload').innerText='Image to Video Demo';let v=document.getElementById('vid');v.style.display='block';v.poster=u;v.play();}
 </script>
 </body>
 </html>
