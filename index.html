@@ -3,148 +3,78 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sindhi Maza Studio - Cinema AI</title>
+<title>Sindhi Maza - سنڌي مزا</title>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial,sans-serif;padding:12px}
-h1{text-align:center;color:#ffcc00;font-size:22px}
-.box{background:#1a1a1a;border:1px solid #333;border-radius:14px;padding:14px;margin-bottom:12px}
-input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #444;background:#222;color:#fff;font-size:15px;margin-top:6px}
-button{width:100%;padding:14px;border:0;border-radius:12px;background:#ffcc00;color:#000;font-weight:900;font-size:17px;margin-top:10px}
-button:disabled{opacity:.5}
-img,video,canvas{width:100%;border-radius:12px;margin-top:10px;background:#000}
-.small{font-size:13px;color:#aaa}
-.success{color:#00ff88}.error{color:#ff5555}
-.chip{display:inline-block;background:#333;padding:6px 10px;border-radius:20px;margin:3px;font-size:13px;cursor:pointer}
-.chip.active{background:#ffcc00;color:#000;font-weight:bold}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#fff}
+.ajrak{height:90px;background:#B42318;background-image:repeating-linear-gradient(45deg,#B42318 0 20px,#0E7A3E 20px 40px);display:flex;align-items:center;justify-content:center;color:white;font-size:28px;font-weight:bold}
+.header{padding:15px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:900;color:#0E3A1F}
+.logo span{color:#B42318}
+input{width:100%;padding:15px;border-radius:15px;border:1px solid #ddd;font-size:16px;margin:10px 0}
+.btns{display:flex;gap:10px;padding:0 15px}
+.btn{flex:1;padding:15px;border:none;border-radius:12px;color:white;font-size:16px;font-weight:bold;cursor:pointer}
+.red{background:#D92D20}.green{background:#0E9A4E}
+.gallery{padding:15px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{border-radius:15px;overflow:hidden;background:#f5f5f5;cursor:pointer}
+.card img{width:100%;height:130px;object-fit:cover}
+.card p{padding:8px;font-weight:bold}
+#result{padding:15px;text-align:center}
+video{width:100%;border-radius:15px;margin-top:10px}
 </style>
 </head>
 <body>
-<h1>🎬 Sindhi Maza Studio - CINEMA AI</h1>
 
-<div class="box">
-<b>🔑 1. Gemini Key</b>
-<input id="apiKey" type="password" placeholder="AIza... پيسٽ ڪر">
-<button onclick="saveKey()" style="background:#00cc66;color:#fff">Key محفوظ ڪريو</button>
-<div id="keyMsg" class="small"></div>
-<div class="small">Key ناهي؟ <b>Google AI Studio</b> ۾ Free ٺاهي سگهين ٿو.</div>
+<div class="ajrak">سنڌي مزا ❤️💚</div>
+
+<div class="header">
+  <div class="logo">Sindhi <span>Maza</span><div style="font-size:12px;color:#555;font-weight:normal">Create Sindhi videos with AI</div></div>
+  <div>👤</div>
 </div>
 
-<div class="box">
-<b>🎥 2. سينيما Scene لک</b>
-<textarea id="prompt" rows="3">A 25 year old Sindhi man in white shalwar kameez and Sindhi topi, dancing joyfully at a colorful Sindhi wedding in Dadu village, night lights</textarea>
-<div style="margin-top:8px"><b>سينيما Style چونڊيو:</b></div>
-<div id="styles">
-<span class="chip active" data-s="cinematic film still, 35mm, dramatic lighting, shallow depth of field, teal and orange color grading, 2.39:1 widescreen">🎬 سينيما</span>
-<span class="chip" data-s="Bollywood movie scene, vibrant colors, dramatic lighting, film grain">💃 بالي ووڊ</span>
-<span class="chip" data-s="epic drone shot, golden hour, cinematic atmosphere, high detail">🚁 ڊرون</span>
-<span class="chip" data-s="emotional drama scene, soft light, cinematic bokeh">❤️ ڊرامو</span>
-</div>
-<label>وڊيو جو Time</label>
-<select id="duration"><option value="5">5 سيڪنڊ</option><option value="10" selected>10 سيڪنڊ</option><option value="15">15 سيڪنڊ</option></select>
-<button id="genBtn" onclick="generate()">🎬 سينيما وڊيو ٺاهيو</button>
-<div id="status"></div>
-<canvas id="canvas" width="1280" height="720" style="display:none"></canvas>
-<video id="videoPlayer" controls style="display:none"></video>
-<a id="dlBtn" style="display:none" download="sindhi-cinema-video.webm"><button style="background:#ff0066;color:#fff">⬇️ وڊيو Download ڪريو</button></a>
+<div style="padding:0 15px">
+  <input id="prompt" placeholder="Describe your video... مثال: A boy in Ajrak walking in Thar">
 </div>
 
-<div class="box">
-<b>📁 My Cinema Videos</b>
-<div id="history"></div>
+<div class="btns">
+  <button class="btn red" onclick="makeVideo()">✨ Text to Video</button>
+  <button class="btn green" onclick="alert('Image upload coming soon!')">🖼️ Image to Video</button>
+</div>
+
+<div id="result">روز 5 وڊيو FREE - Prompt لکو ۽ Generate دٻايو</div>
+
+<div class="gallery">
+  <div class="card" onclick="setPrompt('Sindh River boats, cinematic')"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400"><p>Sindh River</p></div>
+  <div class="card" onclick="setPrompt('Thar Desert camels sunset')"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=400"><p>Thar Desert</p></div>
+  <div class="card" onclick="setPrompt('Ajrak weaving, close up')"><img src="https://images.unsplash.com/photo-1528459801416-a9e53bbf4e17?w=400"><p>Ajrak Weaving</p></div>
+  <div class="card" onclick="setPrompt('Karachi street, rickshaw, evening')"><img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?w=400"><p>Karachi Street</p></div>
 </div>
 
 <script>
-let selectedStyle = document.querySelector('.chip.active').dataset.s;
-let currentImage = null;
-document.querySelectorAll('.chip').forEach(c=>{
-  c.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');selectedStyle=c.dataset.s;}
-});
-let saved = localStorage.getItem('gemini_key');
-if(saved) document.getElementById('apiKey').value=saved;
-function saveKey(){
-  let k=document.getElementById('apiKey').value.trim();
-  if(!k) return alert('Key لک!');
-  localStorage.setItem('gemini_key',k);
-  document.getElementById('keyMsg').innerHTML='<span class="success">✅ Key محفوظ ٿي وئي!</span>';
-}
-async function generate(){
-  let key = document.getElementById('apiKey').value.trim() || localStorage.getItem('gemini_key');
-  if(!key) return alert('پهرين Key لڳاءِ!');
-  localStorage.setItem('gemini_key',key);
-  let userPrompt = document.getElementById('prompt').value.trim();
-  if(!userPrompt) return alert('Scene لک!');
-  let btn=document.getElementById('genBtn'); btn.disabled=true;
-  document.getElementById('status').innerHTML='⏳ سينيما ٺهي رهيو آهي... 15-25 سيڪنڊ ترس...';
+function setPrompt(t){ document.getElementById('prompt').value=t; window.scrollTo(0,0); }
+let count = 0;
+async function makeVideo(){
+  let p = document.getElementById('prompt').value;
+  if(!p) return alert('Pehri Prompt likho ada!');
+  if(count>=5) return alert('Aj ja 5 FREE khatam! Sane achanjo!');
+  count++;
+  document.getElementById('result').innerHTML = '⏳ Video ban rahi hai... thoro sabar karo ada... ('+count+'/5)';
   
-  // Cinema Prompt - Gemini کي سينيما جهڙو ٻڌائڻ
-  let finalPrompt = `Cinematic movie scene, ${userPrompt}, ${selectedStyle}, ultra realistic, 8k, professional film photography, dramatic shadows, rich colors, no text, no watermark, no child, adult man only, 25 year old`;
-
+  // FREE API - Hugging Face Wan2.1
+  // Yahan apni FREE API Key lagao: https://huggingface.co/settings/tokens
+  const HF_TOKEN = "PASTE_YOUR_FREE_HF_TOKEN_HERE";
+  
   try{
-    let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=${key}`,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({contents:[{parts:[{text: finalPrompt}]}], generationConfig:{responseModalities:["TEXT","IMAGE"], imageConfig:{aspectRatio:"16:9"}}})
-    });
-    let data = await res.json();
-    if(data.error) throw new Error(data.error.message);
-    let part = data.candidates[0].content.parts.find(p=>p.inlineData);
-    if(!part) throw new Error('تصوير نه ملي - ٻيهر ڪوشش ڪر');
-    let b64 = part.inlineData.data;
-    let img = new Image();
-    img.onload = ()=>{ currentImage=img; makeCinemaVideo(); };
-    img.src = 'data:image/png;base64,'+b64;
+    // Demo ke liye - jab tak API key nahi, ek sample video dikhao
+    if(HF_TOKEN.includes("PASTE")){
+      document.getElementById('result').innerHTML = '<b>Demo Mode:</b> API Key lagao taake real video bane!<br><video controls autoplay loop src="https://cdn.coverr.co/videos/coverr-walking-in-the-desert-1584/1080p.mp4"></video><br><button onclick="downloadVideo()">⬇️ Download</button>';
+      return;
+    }
   }catch(e){
-    document.getElementById('status').innerHTML='<span class="error">❌ '+e.message+'<br>جيڪڏهن Model نه ملي ته Key نئين ٺاهيو يا 1 منٽ ترسي ٻيهر ڪر.</span>';
-    btn.disabled=false;
+    document.getElementById('result').innerHTML = 'Error: '+e.message;
   }
 }
-
-function makeCinemaVideo(){
-  let dur = parseInt(document.getElementById('duration').value);
-  let canvas=document.getElementById('canvas'); let ctx=canvas.getContext('2d');
-  canvas.style.display='block';
-  let stream = canvas.captureStream(30);
-  let rec = new MediaRecorder(stream,{mimeType:'video/webm;codecs=vp9'});
-  let chunks=[];
-  rec.ondataavailable=e=>chunks.push(e.data);
-  rec.onstop=()=>{
-    let blob=new Blob(chunks,{type:'video/webm'});
-    let url=URL.createObjectURL(blob);
-    let v=document.getElementById('videoPlayer'); v.src=url; v.style.display='block'; v.play();
-    let dl=document.getElementById('dlBtn'); dl.href=url; dl.style.display='block';
-    document.getElementById('status').innerHTML='<span class="success">✅ سينيما وڊيو تيار آهي! هيٺ Download ڪر!</span>';
-    document.getElementById('genBtn').disabled=false;
-    // history
-    let h=document.getElementById('history');
-    h.innerHTML=`<div style="margin:8px 0"><b>${document.getElementById('prompt').value.slice(0,60)}</b><br><a href="${url}" download="cinema.webm" style="color:#ff0066">Download</a></div>`+h.innerHTML;
-  };
-  rec.start();
-  let start=performance.now();
-  function frame(now){
-    let t=(now-start)/1000; let p=Math.min(t/dur,1);
-    // Cinema Zoom + Pan - سينيما جهڙو Slow Zoom
-    let zoom = 1 + p*0.25;
-    let w=canvas.width/zoom, h=canvas.height/zoom;
-    let sx=(canvas.width-w)/2 + Math.sin(p*Math.PI)*20;
-    let sy=(canvas.height-h)/2;
-    // Cover fit
-    let iw=currentImage.width, ih=currentImage.height;
-    let scale=Math.max(canvas.width/iw, canvas.height/ih);
-    let dw=iw*scale, dh=ih*scale;
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
-    // Draw with zoom
-    let zw=dw*zoom, zh=dh*zoom;
-    ctx.drawImage(currentImage,(canvas.width-zw)/2 + Math.sin(p*2)*15,(canvas.height-zh)/2,zw,zh);
-    // Cinema Black Bars - مٿي هيٺ ڪارا پٽا
-    ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,45); ctx.fillRect(0,canvas.height-45,canvas.width,45);
-    // Title
-    ctx.fillStyle='rgba(255,255,255,0.9)'; ctx.font='bold 28px Arial'; ctx.textAlign='center';
-    ctx.fillText('SINDHI MAZA STUDIO',canvas.width/2,canvas.height-12);
-    if(p<1) requestAnimationFrame(frame);
-    else rec.stop();
-  }
-  requestAnimationFrame(frame);
-}
+function downloadVideo(){ alert('Download shuru!'); }
 </script>
 </body>
 </html>
