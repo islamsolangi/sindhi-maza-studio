@@ -1,4 +1,4 @@
-// api/generate.js - Gemini Veo - FIXED MODEL
+// api/generate.js - Gemini Omni 1.1 Flash - Veo ka replacement
 export const maxDuration = 300;
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
@@ -7,35 +7,24 @@ export default async function handler(req, res) {
   if (!KEY) return res.status(500).json({error: 'KEY missing in Vercel'});
 
   try {
-    // ✅ صحيح ماڊل: veo-3.0-generate-001 + predictLongRunning
-    const create = await fetch('https://generativelanguage.googleapis.com/v1beta/models/veo-3.0-generate-001:predictLongRunning', {
+    const r = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-omni-1.1-flash:generateContent', {
       method: 'POST',
       headers: { 'x-goog-api-key': KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        instances: [{ prompt: prompt }],
-        parameters: { aspectRatio: '16:9', personGeneration: 'allow_all' }
+        contents: [{ parts: [{ text: 'Generate a cinematic 8 second video: ' + prompt }] }],
+        generationConfig: { responseModalities: ['VIDEO'], videoConfig: { aspectRatio: '16:9' } }
       })
     });
-    const job = await create.json();
-    if (job.error) return res.status(500).json({error: 'Gemini: ' + job.error.message});
+    const j = await r.json();
+    if (j.error) return res.status(500).json({error: 'Gemini Omni: ' + j.error.message});
 
-    let opName = job.name; // operations/...
-    for (let i = 0; i < 40; i++) {
-      await new Promise(r => setTimeout(r, 5000));
-      const check = await fetch('https://generativelanguage.googleapis.com/v1beta/' + opName, {
-        headers: { 'x-goog-api-key': KEY }
-      });
-      const status = await check.json();
-      if (status.done) {
-        if (status.error) return res.status(500).json({error: 'Gemini: ' + status.error.message});
-        const videoUri = status.response?.generateVideoResponse?.generatedSamples?.[0]?.video?.uri;
-        if (!videoUri) return res.status(500).json({error: 'No video - Veo ko billing chahiye ho sakta hai'});
-        const file = await fetch(videoUri, { headers: { 'x-goog-api-key': KEY } });
-        const buf = await file.arrayBuffer();
-        res.setHeader('Content-Type', 'video/mp4');
-        return res.send(Buffer.from(buf));
-      }
-    }
-    return res.status(500).json({error: 'Timeout - 3 min se zyada laga'});
+    // video base64 me aati hai
+    const parts = j.candidates?.[0]?.content?.parts || [];
+    let videoPart = parts.find(p => p.inlineData && p.inlineData.mimeType?.includes('video'));
+    if (!videoPart) return res.status(500).json({error: 'No video - ' + JSON.stringify(j).substring(0,500)});
+
+    const buf = Buffer.from(videoPart.inlineData.data, 'base64');
+    res.setHeader('Content-Type', 'video/mp4');
+    return res.send(buf);
   } catch(e){ return res.status(500).json({error: e.message}) }
 }
