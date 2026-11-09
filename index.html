@@ -1,64 +1,35 @@
 <!DOCTYPE html>
-<html lang="sd">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sindhi Maza - Create Sindhi videos with AI</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#fff;padding-bottom:30px}
-.banner{background:repeating-linear-gradient(45deg,#d32f2f 0 25px,#2e7d32 25px 50px);text-align:center;padding:18px;font-size:34px;color:#fff;font-weight:bold}
-.header{display:flex;justify-content:space-between;align-items:center;padding:15px 16px}
-.header h1{font-size:38px;line-height:1}
-.header h1 span{color:#d32f2f}
-.header h1 b{color:#1b5e20}
-.header p{color:#666;font-size:14px}
-.icon{font-size:28px}
-.box{padding:0 16px}
-input{width:100%;padding:16px;border:3px solid #111;border-radius:28px;font-size:17px;outline:none}
-.btns{display:flex;gap:12px;margin-top:14px}
-.btns button{flex:1;padding:18px 8px;border:none;border-radius:16px;color:#fff;font-size:19px;font-weight:bold;cursor:pointer}
-.red{background:#e53935}.green{background:#43a047}
-.note{text-align:center;margin:16px;font-size:18px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:0 16px}
-.card{border-radius:20px;overflow:hidden;background:#f7f7f7;cursor:pointer}
-.card img{width:100%;height:180px;object-fit:cover;display:block}
-.card p{padding:12px;font-weight:bold;font-size:19px}
-#result{display:none;margin:14px 16px;padding:16px;background:#111;color:#fff;border-radius:16px;text-align:center}
-#result video{width:100%;border-radius:12px;margin-top:10px}
-</style>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sindhi Maza</title>
+<style>body{font-family:Arial;margin:0}.banner{background:repeating-linear-gradient(45deg,#d32f2f 0 25px,#2e7d32 25px 50px);text-align:center;padding:18px;font-size:34px;color:#fff}.box{padding:0 16px}input{width:100%;padding:16px;border:3px solid #111;border-radius:28px;font-size:17px}button{padding:18px;border:none;border-radius:16px;color:#fff;font-size:19px;font-weight:bold}video{width:100%;border-radius:12px;margin-top:10px}</style>
 </head>
 <body>
 <div class="banner">سنڌي مزا ❤️💚</div>
-<div class="header"><div><h1><b>Sindhi</b> <span>Maza</span></h1><p>Create Sindhi videos with AI</p></div><div class="icon">👤</div></div>
 <div class="box">
-<input id="prompt" placeholder="ak standing near Sindh River at sunset, smiling...">
-<div class="btns">
-<button class="red" onclick="makeVideo()">✨ Text to Video</button>
-<button class="green" onclick="document.getElementById('file').click()">🖼️ Image to Video</button>
+<input id="prompt" placeholder="Sindhi boy near Sindh River...">
+<br><br>
+<button style="background:#e53935;width:100%" onclick="makeVideo()">✨ Text to Video</button>
+<div id="result" style="display:none;margin-top:14px;background:#111;color:#fff;padding:14px;border-radius:14px;text-align:center">
+<b id="rtext"></b><p id="rload"></p>
+<video id="vid" controls playsinline style="display:none"></video>
 </div>
-<input type="file" id="file" accept="image/*" hidden onchange="showImage(this)">
 </div>
-<p class="note">دٻايو Generate - Prompt لکو ۽ 5 روز FREE وڊيو</p>
-<div id="result"><b id="rtext"></b><p id="rload">AI وڊيو ٺاهي رهي آهي...</p><video id="vid" controls loop style="display:none"></video></div>
-<div class="grid">
-<div class="card" onclick="fill('Sindh River at sunset')"><img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=600"><p>Sindh River</p></div>
-<div class="card" onclick="fill('Thar Desert camel caravan')"><img src="https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=600"><p>Thar Desert</p></div>
-<div class="card" onclick="fill('Karachi sea view')"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=600"><p>Karachi Sea</p></div>
-<div class="card" onclick="fill('Mohenjo Daro ancient city')"><img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600"><p>Mohenjo Daro</p></div>
-</div>
+
 <script>
-function fill(t){document.getElementById('prompt').value=t;window.scrollTo(0,0)}
-function makeVideo(){
-let p=document.getElementById('prompt').value||'Sindh River';
-let r=document.getElementById('result');r.style.display='block';
-document.getElementById('rtext').innerText='🎬 '+p;
-document.getElementById('rload').innerText='AI وڊيو ٺاهي رهي آهي... 100% ٿي ويو!';
-let v=document.getElementById('vid');v.style.display='block';
-v.src='https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4';
-v.play();
+// 👇👇 هي آهي makeVideo واري جڳھ - هتي آهي!
+async function makeVideo(){
+  let p = document.getElementById('prompt').value || 'Sindhi boy near Sindh River';
+  document.getElementById('result').style.display='block';
+  document.getElementById('rtext').innerText='🎬 '+p;
+  document.getElementById('rload').innerText='Sora AI وڊيو ٺاهي رهي آهي... 1-2 منٽ لڳندا...';
+  let res = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:p}) });
+  if(!res.ok){ document.getElementById('rload').innerText='Error: Balance يا Key چيڪ ڪريو'; return; }
+  let blob = await res.blob();
+  let url = URL.createObjectURL(blob);
+  let v = document.getElementById('vid');
+  v.style.display='block'; v.src=url; v.play();
+  document.getElementById('rload').innerText='✅ اصل AI وڊيو تيار آهي!';
 }
-function showImage(e){let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f);let r=document.getElementById('result');r.style.display='block';document.getElementById('rtext').innerText='🖼️ توهان جي فوٽو مان وڊيو تيار آهي!';document.getElementById('rload').innerText='Image to Video Demo';let v=document.getElementById('vid');v.style.display='block';v.poster=u;v.play();}
 </script>
 </body>
 </html>
