@@ -23,7 +23,7 @@ async function makeVideo(){
   document.getElementById('rtext').innerText='🎬 '+p;
   document.getElementById('rload').innerText='Sora AI وڊيو ٺاهي رهي آهي... 1-2 منٽ لڳندا...';
   let res = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:p}) });
-  if(!res.ok){ ... 'Error: Balance يا Key' }
+  if(!res.ok){ let e = await res.text(); document.getElementById('rload').innerText='اصل غلطي: ' + e; return; }
   let blob = await res.blob();
   let url = URL.createObjectURL(blob);
   let v = document.getElementById('vid');
