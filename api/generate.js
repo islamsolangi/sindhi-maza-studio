@@ -1,38 +1,34 @@
-// api/generate.js - OpenAI Sora Video
+// api/generate.js - Gemini Veo Video
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
   const { prompt } = req.body;
-  if (!prompt) return res.status(400).json({error: 'Prompt missing'});
+  const KEY = process.env.GEMINI_API_KEY;
+  if (!KEY) return res.status(500).json({error: 'GEMINI_API_KEY missing in Vercel'});
 
-  // 1. Video job start karo
-  const create = await fetch('https://api.openai.com/v1/videos', {
+  // 1. Veo job start
+  const create = await fetch('https://generativelanguage.googleapis.com/v1beta/models/veo-3.0-fast-generate-preview:generateContent?key=' + KEY, {
     method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + process.env.OPENAI_API_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ model: 'sora-2', prompt: prompt, size: '720x1280', seconds: '8' })
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ instances: [{ prompt: prompt }], parameters: { aspectRatio: '16:9', durationSeconds: 8 } })
   });
   const job = await create.json();
   if (job.error) return res.status(500).json({error: job.error.message});
 
-  // 2. Wait karo jab tak video ready thiye
-  let videoId = job.id;
+  let opName = job.name;
+  // 2. Wait karo
   for (let i = 0; i < 30; i++) {
     await new Promise(r => setTimeout(r, 5000));
-    const check = await fetch('https://api.openai.com/v1/videos/' + videoId, {
-      headers: { 'Authorization': 'Bearer ' + process.env.OPENAI_API_KEY }
-    });
+    const check = await fetch('https://generativelanguage.googleapis.com/v1beta/' + opName + '?key=' + KEY);
     const status = await check.json();
-    if (status.status === 'completed') {
-      const file = await fetch('https://api.openai.com/v1/videos/' + videoId + '/content', {
-        headers: { 'Authorization': 'Bearer ' + process.env.OPENAI_API_KEY }
-      });
+    if (status.done) {
+      if (status.error) return res.status(500).json({error: status.error.message});
+      const videoUri = status.response?.generatedSamples?.[0]?.video?.uri;
+      if (!videoUri) return res.status(500).json({error: 'No video returned'});
+      const file = await fetch(videoUri + '&key=' + KEY);
       const buf = await file.arrayBuffer();
       res.setHeader('Content-Type', 'video/mp4');
       return res.send(Buffer.from(buf));
     }
-    if (status.status === 'failed') return res.status(500).json({error: 'Video failed'});
   }
   return res.status(500).json({error: 'Timeout - try again'});
 }
