@@ -1,4 +1,4 @@
-// api/generate.js - Gemini Omni 1.1 Flash - Veo ka replacement
+// api/generate.js - Gemini Omni 1.1 Flash - FIXED
 export const maxDuration = 300;
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
@@ -12,13 +12,12 @@ export default async function handler(req, res) {
       headers: { 'x-goog-api-key': KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: 'Generate a cinematic 8 second video: ' + prompt }] }],
-        generationConfig: { responseModalities: ['VIDEO'], videoConfig: { aspectRatio: '16:9' } }
+        generationConfig: { responseModalities: ['VIDEO'] }
       })
     });
     const j = await r.json();
     if (j.error) return res.status(500).json({error: 'Gemini Omni: ' + j.error.message});
 
-    // video base64 me aati hai
     const parts = j.candidates?.[0]?.content?.parts || [];
     let videoPart = parts.find(p => p.inlineData && p.inlineData.mimeType?.includes('video'));
     if (!videoPart) return res.status(500).json({error: 'No video - ' + JSON.stringify(j).substring(0,500)});
