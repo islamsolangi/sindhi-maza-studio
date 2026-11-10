@@ -1,75 +1,20 @@
-// api/generate.js
+// api/generate.js - Hugging Face Wan 2.1 - Free
 export const maxDuration = 300;
-
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "POST only" });
-  }
-
-  const { prompt } = req.body || {};
-  const KEY = process.env.GEMINI_API_KEY;
-
-  if (!KEY) {
-    return res.status(500).json({ error: "KEY missing" });
-  }
-
-  if (!prompt || prompt.length > 2000) {
-    return res.status(400).json({ error: "Invalid prompt" });
-  }
-
+  if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
+  const { prompt } = req.body;
+  const KEY = process.env.HF_TOKEN;
+  if (!KEY) return res.status(500).json({error: 'HF_TOKEN missing in Vercel'});
   try {
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/interactions",
-      {
-        method: "POST",
-        headers: {
-          "x-goog-api-key": KEY,
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          model: "gemini-omni-1.1-flash",
-          input: "Create an 8-second cinematic video with audio: " + prompt,
-          response_format: {
-            type: "video"
-          }
-        })
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        error: data.error?.message || "Video generation failed"
-      });
-    }
-
-    const steps = data.steps || [];
-    const output = steps.find(s => s.type === "model_output");
-    const video = output?.content?.find(
-      item => item.type === "video" && item.data
-    );
-
-    if (!video) {
-      return res.status(500).json({
-        error: "Video output not found",
-        status: data.status
-      });
-    }
-
-    const buffer = Buffer.from(video.data, "base64");
-
-    res.setHeader("Content-Type", "video/mp4");
-    res.setHeader(
-      "Content-Disposition",
-      'attachment; filename="sindhi-maza.mp4"'
-    );
-
-    return res.send(buffer);
-
-  } catch (error) {
-    return res.status(500).json({
-      error: error.message
+    const fullPrompt = 'Cinematic film still, realistic, smooth natural motion, warm film light, ' + prompt;
+    const r = await fetch('https://api-inference.huggingface.co/models/Wan-AI/Wan2.1-T2V-1.3B', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ inputs: fullPrompt })
     });
-  }
+    if(!r.ok){ let e = await r.text(); return res.status(500).json({error: 'Hugging Face: ' + e.substring(0,500)}); }
+    const buf = Buffer.from(await r.arrayBuffer());
+    res.setHeader('Content-Type', 'video/mp4');
+    return res.send(buf);
+  } catch(e){ return res.status(500).json({error: e.message}) }
 }
