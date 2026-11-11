@@ -1,16 +1,13 @@
-// api/generate.js - Pollinations FIXED - Key in URL
+// api/generate.js - Pollinations FREE model WAN
 export const maxDuration = 300;
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
     const prompt = req.body?.prompt || 'Sindhi boy dancing near Sindh River';
     const KEY = process.env.POLLINATIONS_KEY;
-    if (!KEY) return res.status(500).json({error: 'POLLINATIONS_KEY missing in Vercel - Vercel me Key lagao phir Redeploy karo'});
+    if (!KEY) return res.status(500).json({error: 'POLLINATIONS_KEY missing'});
     const fullPrompt = encodeURIComponent('Cinematic, realistic, smooth motion, warm film light: ' + prompt);
-
-    // Key URL me bhi, Header me bhi - dono tarike
-    const url = 'https://gen.pollinations.ai/video/' + fullPrompt + '?model=veo&width=1280&height=720&nologo=true&safe=true&token=' + KEY;
-
+    const url = 'https://gen.pollinations.ai/video/' + fullPrompt + '?model=wan&width=720&height=480&nologo=true&safe=true&token=' + KEY;
     const v = await fetch(url, { headers: { 'Accept': 'video/mp4', 'Authorization': 'Bearer ' + KEY } });
     if (!v.ok) {
       const t = await v.text().catch(()=> '');
