@@ -1,23 +1,20 @@
-// api/generate.js - Pollinations FREE model WAN
-export const maxDuration = 300;
+// api/generate.js - FREE IMAGE - Pollinations image is FREE
+export const maxDuration = 60;
 export default async function handler(req, res) {
   try {
     if (req.method !== 'POST') return res.status(405).json({error: 'POST only'});
-    const prompt = req.body?.prompt || 'Sindhi boy dancing near Sindh River';
+    const prompt = req.body?.prompt || 'Sindhi boy near Sindh River';
     const KEY = process.env.POLLINATIONS_KEY;
-    if (!KEY) return res.status(500).json({error: 'POLLINATIONS_KEY missing'});
-    const fullPrompt = encodeURIComponent('Cinematic, realistic, smooth motion, warm film light: ' + prompt);
-    const url = 'https://gen.pollinations.ai/video/' + fullPrompt + '?model=wan&width=720&height=480&nologo=true&safe=true&token=' + KEY;
-    const v = await fetch(url, { headers: { 'Accept': 'video/mp4', 'Authorization': 'Bearer ' + KEY } });
-    if (!v.ok) {
-      const t = await v.text().catch(()=> '');
-      return res.status(500).json({error: 'Pollinations: ' + v.status + ' ' + t.substring(0,400)});
+    const full = encodeURIComponent('Cinematic photo, realistic, warm sunset light, high detail: ' + prompt);
+    // Image model flux is FREE / very low pollen
+    const url = 'https://gen.pollinations.ai/image/' + full + '?model=flux&width=1024&height=768&nologo=true&safe=true&token=' + (KEY || '');
+    const r = await fetch(url, { headers: { 'Authorization': 'Bearer ' + (KEY || '') } });
+    if (!r.ok) {
+      const t = await r.text().catch(()=> '');
+      return res.status(500).json({error: 'Pollinations Image: ' + r.status + ' ' + t.substring(0,400)});
     }
-    const buf = Buffer.from(await v.arrayBuffer());
-    if (buf.length < 10000) return res.status(500).json({error: 'Pollinations: khali video - dobara try karo'});
-    res.setHeader('Content-Type', 'video/mp4');
+    const buf = Buffer.from(await r.arrayBuffer());
+    res.setHeader('Content-Type', 'image/jpeg');
     return res.send(buf);
-  } catch(e) {
-    return res.status(500).json({error: 'Server: ' + e.message});
-  }
+  } catch(e){ return res.status(500).json({error: 'Server: ' + e.message}); }
 }
