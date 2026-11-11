@@ -1,90 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Sindhi Maza</title>
-<style>body{font-family:Arial;margin:0}.banner{background:repeating-linear-gradient(45deg,#d32f2f 0 25px,#2e7d32 25px 50px);text-align:center;padding:18px;font-size:34px;color:#fff}.box{padding:0 16px}input{width:100%;padding:16px;border:3px solid #111;border-radius:28px;font-size:17px;box-sizing:border-box}button{padding:18px;border:none;border-radius:16px;color:#fff;font-size:19px;font-weight:bold}video{width:100%;border-radius:12px;margin-top:10px}</style>
-</head>
-<body>
-<div class="banner">سنڌي مزا ❤️💚</div>
-<div class="box">
-<!-- LOGIN BOX -->
-<div id="loginBox" style="background:#fff;padding:15px;border-radius:15px;margin:15px 0;text-align:center;box-shadow:0 2px 10px #0002;border:1px solid #ddd">
-  <b id="userInfo">👤 مهرباني ڪري Login ڪريو</b><br>
-  <span id="creditInfo" style="color:red;font-weight:bold">ڪريڊٽ: -</span><br><br>
-  <input id="userName" placeholder="توهان جو نالو" style="margin-bottom:8px"><br>
-  <input id="userPhone" placeholder="موبائيل نمبر - 0300xxxxxxx" style="margin-bottom:8px"><br>
-  <button onclick="doLogin()" style="background:green;width:100%">✅ Login - 5 مفت ڪريڊٽ وٺو</button>
-</div>
-
-<input id="prompt" placeholder="Sindhi boy near Sindh River...">
-<br><br>
-<button style="background:#e53935;width:100%" onclick="makeVideo()">✨ Text to Video</button>
-<div id="result" style="display:none;margin-top:14px;background:#111;color:#fff;padding:14px;border-radius:14px;text-align:center">
-<b id="rtext"></b><p id="rload"></p>
-<video id="vid" controls playsinline style="display:none"></video>
-</div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-const SUPA_URL = "https://qvyfyactvlrwobgdpqox.supabase.co";
-const SUPA_KEY = "sb_publishable_x1Suwz1st3G9JU0Qujqyeg_g-iBjnEa";
-const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
-let myPhone = localStorage.getItem('sm_phone');
-let myCredits = 0;
-
-async function doLogin(){
-  let name = document.getElementById('userName').value.trim();
-  let phone = document.getElementById('userPhone').value.trim();
-  if(!name || phone.length < 10){ alert('نالو ۽ صحيح موبائيل نمبر لکو'); return; }
-  let { data } = await supa.from('profiles').select('*').eq('phone', phone).single();
-  if(!data){
-    await supa.from('profiles').insert({phone: phone, name: name, credits: 5});
-    data = {phone, name, credits: 5};
-  }
-  myPhone = phone; myCredits = data.credits;
-  localStorage.setItem('sm_phone', phone);
-  localStorage.setItem('sm_name', name);
-  showUser(name, myCredits);
-  alert('مبارڪون! توهان کي ' + myCredits + ' ڪريڊٽ مليا!');
-}
-function showUser(name, credits){
-  document.getElementById('userInfo').innerText = '👤 ' + name;
-  document.getElementById('creditInfo').innerText = '🎬 ڪريڊٽ بچيل: ' + credits;
-}
-async function checkCredit(){
-  if(!myPhone){ alert('پهريان Login ڪريو - مٿي نالو ۽ نمبر لکو'); return false; }
-  let { data } = await supa.from('profiles').select('credits').eq('phone', myPhone).single();
-  myCredits = data ? data.credits : 0;
-  showUser(localStorage.getItem('sm_name'), myCredits);
-  if(myCredits <= 0){ alert('توهان جا 5 مفت ڪريڊٽ ختم ٿي ويا! هاڻي 100 رپيا = 10 وڊيو لاءِ رابطو ڪريو'); return false; }
-  return true;
-}
-async function useOneCredit(){
-  myCredits = myCredits - 1;
-  await supa.from('profiles').update({credits: myCredits}).eq('phone', myPhone);
-  showUser(localStorage.getItem('sm_name'), myCredits);
-}
-if(myPhone){
-  supa.from('profiles').select('*').eq('phone', myPhone).single().then(r=>{
-    if(r.data){ myCredits = r.data.credits; showUser(r.data.name, r.data.credits); }
-  });
-}
-
 async function makeVideo(){
   if(!(await checkCredit())) return;
   let p = document.getElementById('prompt').value || 'Sindhi boy near Sindh River';
   document.getElementById('result').style.display='block';
   document.getElementById('rtext').innerText='🎬 '+p;
-  document.getElementById('rload').innerText='Gemini وڊيو ٺاهي رهي آهي... 1-2 منٽ لڳندا...';
+  document.getElementById('rload').innerText='AI تصوير ٺاهي رهي آهي... 10 سيڪنڊ ترسو...';
   let res = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:p}) });
   if(!res.ok){ let e = await res.text(); document.getElementById('rload').innerText='اصل غلطي: ' + e; return; }
   let blob = await res.blob();
   let url = URL.createObjectURL(blob);
+  // Video ki jagah IMAGE ko VIDEO jaisa dikhao - Ken Burns motion
   let v = document.getElementById('vid');
-  v.style.display='block'; v.src=url; v.play();
-  document.getElementById('rload').innerText='✅ اصل AI وڊيو تيار آهي!';
+  v.style.display='none';
+  let img = document.getElementById('animImg');
+  if(!img){
+    img = document.createElement('img');
+    img.id='animImg';
+    img.style.cssText='width:100%;border-radius:12px;margin-top:10px;animation:zoom 8s ease-in-out infinite alternate;';
+    document.getElementById('result').appendChild(img);
+    let st=document.createElement('style');
+    st.innerHTML='@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.15) translateX(-2%)}}';
+    document.head.appendChild(st);
+  }
+  img.style.display='block'; img.src=url;
+  document.getElementById('rload').innerHTML='✅ توهان جي AI وڊيو تيار آهي! 🎵 ميوزڪ لاءِ هيٺ دٻايو <br><button onclick="document.getElementById(\'bgMusic\').play()" style="background:#2e7d32;padding:10px 20px;margin-top:8px">▶️ سنڌي ميوزڪ هلايو</button><audio id="bgMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>';
   await useOneCredit();
 }
-</script>
-</body>
-</html>
