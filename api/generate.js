@@ -1,4 +1,4 @@
-// api/generate.js - SAFE - Crash nahi hoga
+// api/generate.js - HF Router - NEW Endpoint 2026
 export const maxDuration = 300;
 export default async function handler(req, res) {
   try {
@@ -7,17 +7,17 @@ export default async function handler(req, res) {
     const KEY = process.env.HF_TOKEN;
     if (!KEY) return res.status(500).json({error: 'HF_TOKEN missing in Vercel'});
 
-    const r = await fetch('https://api-inference.huggingface.co/models/damo-vilab/text-to-video-ms-1.7b', {
+    // ✅ NAYA Router endpoint - purana band hai
+    const r = await fetch('https://router.huggingface.co/hf-inference/models/damo-vilab/text-to-video-ms-1.7b', {
       method: 'POST',
       headers: { 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' },
       body: JSON.stringify({ inputs: prompt, parameters: { wait_for_model: true } })
     });
 
     const ctype = r.headers.get('content-type') || '';
-    // Agar HF ne JSON error bheja, to usko video na samjho
     if (!r.ok || ctype.includes('application/json')) {
       let txt = await r.text();
-      return res.status(500).json({error: 'Hugging Face: ' + txt.substring(0,500)});
+      return res.status(500).json({error: 'Hugging Face Router: ' + txt.substring(0,500)});
     }
 
     const buf = Buffer.from(await r.arrayBuffer());
