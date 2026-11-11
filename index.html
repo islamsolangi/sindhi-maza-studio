@@ -1,27 +1,68 @@
+<!DOCTYPE html>
+<html lang="sd"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sindhi Maza - AI Video</title>
+<style>
+body{margin:0;font-family:system-ui;background:#fff;color:#111;text-align:center}
+.banner{background:linear-gradient(90deg,#d32f2f 50%,#2e7d32 50%);color:#fff;padding:18px;font-size:24px;font-weight:800}
+.card{max-width:520px;margin:14px auto;padding:16px;border:1px solid #eee;border-radius:16px;box-shadow:0 4px 14px #0001}
+input{width:92%;padding:13px;margin:7px 0;border:2px solid #111;border-radius:30px;font-size:16px}
+.btn{width:94%;padding:14px;border:0;border-radius:14px;color:#fff;font-size:18px;font-weight:700;margin:7px 0}
+.green{background:#2e7d32}.red{background:#ef4444}.dark{background:#111}
+#result{display:none;margin-top:12px;background:#111;color:#fff;padding:14px;border-radius:14px}
+#animImg{width:100%;border-radius:12px;margin-top:10px;animation:zoom 8s ease-in-out infinite alternate}
+@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.15) translateX(-2%)}}
+.gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.gallery div{background:#f5f5f5;border-radius:12px;padding:22px 6px;font-weight:700}
+</style></head><body>
+<div class="banner">🎬 سنڌي مزا - Sindhi Maza</div>
+<div class="card">
+<input id="name" placeholder="محمد اسلام - نالو">
+<input id="phone" placeholder="0300xxxxxxx - فون">
+<button class="btn green" onclick="doLogin()">✅ Login - 5 مفت ڪريڊٽ وٺو</button>
+<div id="userInfo" style="font-weight:700;margin:6px"></div>
+<input id="prompt" placeholder="A Sindhi boy near Sindh River, cinematic...">
+<button class="btn red" onclick="makeVideo()">✨ Text to Video</button>
+<button class="btn dark" onclick="alert('Image to Video جلد ايندو!')">🖼️ Image to Video</button>
+<div id="result"><div id="rtext"></div><div id="rload" style="margin:8px"></div><img id="animImg" style="display:none"><video id="vid" controls style="width:100%;display:none;border-radius:12px"></video></div>
+<div class="gallery"><div>🌊 Sindh River</div><div>🏜️ Thar Desert</div><div>🌊 Karachi Sea</div><div>🏛️ Mohenjo Daro</div></div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPA_URL='https://qvyfyactvlrwobgdpqox.supabase.co';
+const SUPA_KEY='sb_publishable_x1Suwz1st3G9JU0Qujqyeg_g-iBjnEa';
+const supa = window.supabase.createClient(SUPA_URL, SUPA_KEY);
+let myPhone='', myCredits=5;
+async function doLogin(){
+  let n=document.getElementById('name').value.trim();
+  let p=document.getElementById('phone').value.trim();
+  if(!n||!p){alert('نالو ۽ فون لکو');return;}
+  myPhone=p;
+  let {data} = await supa.from('profiles').select('*').eq('phone',p).single();
+  if(!data){
+    let {data:d2} = await supa.from('profiles').insert([{phone:p,name:n,credits:5}]).select().single();
+    data=d2;
+  }
+  myCredits=data?data.credits:5;
+  document.getElementById('userInfo').innerText='👤 '+n+' | ڪريڊٽ: '+myCredits;
+}
+async function checkCredit(){ if(myCredits<=0){alert('ڪريڊٽ ختم!');return false;} return true; }
+async function useOneCredit(){
+  myCredits--; document.getElementById('userInfo').innerText+=' | نئون: '+myCredits;
+  if(myPhone) await supa.from('profiles').update({credits:myCredits}).eq('phone',myPhone);
+}
 async function makeVideo(){
   if(!(await checkCredit())) return;
-  let p = document.getElementById('prompt').value || 'Sindhi boy near Sindh River';
+  let p=document.getElementById('prompt').value||'Sindhi boy near Sindh River';
   document.getElementById('result').style.display='block';
   document.getElementById('rtext').innerText='🎬 '+p;
   document.getElementById('rload').innerText='AI تصوير ٺاهي رهي آهي... 10 سيڪنڊ ترسو...';
-  let res = await fetch('/api/generate', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({prompt:p}) });
-  if(!res.ok){ let e = await res.text(); document.getElementById('rload').innerText='اصل غلطي: ' + e; return; }
-  let blob = await res.blob();
-  let url = URL.createObjectURL(blob);
-  // Video ki jagah IMAGE ko VIDEO jaisa dikhao - Ken Burns motion
-  let v = document.getElementById('vid');
-  v.style.display='none';
-  let img = document.getElementById('animImg');
-  if(!img){
-    img = document.createElement('img');
-    img.id='animImg';
-    img.style.cssText='width:100%;border-radius:12px;margin-top:10px;animation:zoom 8s ease-in-out infinite alternate;';
-    document.getElementById('result').appendChild(img);
-    let st=document.createElement('style');
-    st.innerHTML='@keyframes zoom{from{transform:scale(1)}to{transform:scale(1.15) translateX(-2%)}}';
-    document.head.appendChild(st);
-  }
-  img.style.display='block'; img.src=url;
-  document.getElementById('rload').innerHTML='✅ توهان جي AI وڊيو تيار آهي! 🎵 ميوزڪ لاءِ هيٺ دٻايو <br><button onclick="document.getElementById(\'bgMusic\').play()" style="background:#2e7d32;padding:10px 20px;margin-top:8px">▶️ سنڌي ميوزڪ هلايو</button><audio id="bgMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>';
-  await useOneCredit();
+  try{
+    let res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:p})});
+    if(!res.ok){ let e=await res.text(); document.getElementById('rload').innerText='اصل غلطي: '+e; return; }
+    let blob=await res.blob(); let url=URL.createObjectURL(blob);
+    let img=document.getElementById('animImg'); img.style.display='block'; img.src=url;
+    document.getElementById('rload').innerHTML='✅ توهان جي AI وڊيو تيار آهي! 🎵 <br><button onclick="document.getElementById(\'bgMusic\').play()" style="background:#2e7d32;color:#fff;padding:10px 20px;margin-top:8px;border:0;border-radius:10px">▶️ سنڌي ميوزڪ هلايو</button><audio id="bgMusic" loop><source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>';
+    await useOneCredit();
+  }catch(e){ document.getElementById('rload').innerText='Error: '+e.message; }
 }
+</script></body></html>
