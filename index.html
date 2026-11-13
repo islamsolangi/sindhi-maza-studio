@@ -24,6 +24,36 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 <body>
 <header><h1>سنڌي مزا</h1><p>پنهنجي وڊيو ٺاهيو</p></header>
 <main>
+  <div style="text-align:center;margin:12px">
+<button onclick="document.getElementById('samples').classList.toggle('hidden')" style="padding:12px 20px;border-radius:20px;border:0;background:#c9a227;color:#000;font-weight:800;cursor:pointer">نموني وڊيو ڏسو - 1-2 سيڪنڊ</button>
+</div>
+
+<div id="samples" class="card hidden" style="text-align:center">
+<h3>نموني وڊيو - محفوظ ٿيل</h3>
+<p>هي ڏسو، توهان جي وڊيو به اهڙي ئي ٺهندي</p>
+
+<div style="display:flex;gap:8px;justify-content:center">
+<div style="flex:1">
+<video width="100%" controls muted loop poster="https://via.placeholder.com/300x200?text=Sindhi+Gaon">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+<p>ڳوٺ وارو منظر</p>
+</div>
+<div style="flex:1">
+<video width="100%" controls muted loop poster="https://via.placeholder.com/300x200?text=Sindhi+Shadi">
+<source src="https://www.w3schools.com/html/movie.mp4" type="video/mp4">
+</video>
+<p>شادي وارو منظر</p>
+</div>
+<div style="flex:1">
+<video width="100%" controls muted loop poster="https://via.placeholder.com/300x200?text=Mazahiya">
+<source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+</video>
+<p>مزاحيه منظر</p>
+</div>
+</div>
+<p style="font-size:13px;color:#666">هي نموني آهن. توهان جي وڊيو توهان جي لکڻ تي ٺهندي.</p>
+</div>
 <div class="tabs">
 <button id="tabText" class="tab active" onclick="switchTab('text')">لکي وڊيو ٺاهيو</button>
 <button id="tabPhoto" class="tab" onclick="switchTab('photo')">فوٽو مان وڊيو ٺاهيو</button>
