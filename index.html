@@ -24,14 +24,13 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 <body>
 <header><h1>سنڌي مزا</h1><p>پنهنجي وڊيو ٺاهيو</p></header>
 <main>
-  <div style="text-align:center;margin:12px">
+<div style="text-align:center;margin:12px">
 <button onclick="document.getElementById('samples').classList.toggle('hidden')" style="padding:12px 20px;border-radius:20px;border:0;background:#c9a227;color:#000;font-weight:800;cursor:pointer">نموني وڊيو ڏسو - 1-2 سيڪنڊ</button>
 </div>
 
 <div id="samples" class="card hidden" style="text-align:center">
 <h3>نموني وڊيو - محفوظ ٿيل</h3>
 <p>هي ڏسو، توهان جي وڊيو به اهڙي ئي ٺهندي</p>
-
 <div style="display:flex;gap:8px;justify-content:center">
 <div style="flex:1">
 <video width="100%" controls muted loop poster="https://via.placeholder.com/300x200?text=Sindhi+Gaon">
@@ -54,6 +53,39 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 </div>
 <p style="font-size:13px;color:#666">هي نموني آهن. توهان جي وڊيو توهان جي لکڻ تي ٺهندي.</p>
 </div>
+
+<div class="card" style="text-align:center">
+<h3>قيمت لسٽ - فڪس ريٽ</h3>
+<table style="width:100%;border-collapse:collapse;font-size:14px">
+<tr style="background:#0f5132;color:#fff">
+<th style="padding:8px;border:1px solid #ccc">وڊيو</th>
+<th style="padding:8px;border:1px solid #ccc">ٽائيم</th>
+<th style="padding:8px;border:1px solid #ccc">قيمت</th>
+</tr>
+<tr>
+<td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td>
+<td style="padding:8px;border:1px solid #ccc">6 سيڪنڊ</td>
+<td style="padding:8px;border:1px solid #ccc"><b>110 رپيا</b></td>
+</tr>
+<tr style="background:#f9f9f9">
+<td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td>
+<td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td>
+<td style="padding:8px;border:1px solid #ccc"><b>200 رپيا</b></td>
+</tr>
+<tr>
+<td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td>
+<td style="padding:8px;border:1px solid #ccc">5 سيڪنڊ</td>
+<td style="padding:8px;border:1px solid #ccc"><b>180 رپيا</b></td>
+</tr>
+<tr style="background:#f9f9f9">
+<td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td>
+<td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td>
+<td style="padding:8px;border:1px solid #ccc"><b>300 رپيا</b></td>
+</tr>
+</table>
+<p style="font-size:12px;color:#666">قيمت فڪس آهي.</p>
+</div>
+
 <div class="tabs">
 <button id="tabText" class="tab active" onclick="switchTab('text')">لکي وڊيو ٺاهيو</button>
 <button id="tabPhoto" class="tab" onclick="switchTab('photo')">فوٽو مان وڊيو ٺاهيو</button>
@@ -68,12 +100,14 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 <textarea id="photoPrompt" placeholder="مثال: هن کي کلايو"></textarea>
 </div>
 <div class="card">
-<label>وڊيو چونڊيو - رڳو هڪ ئي قيمت:</label>
-<div style="display:flex;gap:10px">
-<label class="price-card"><input type="radio" name="quality" value="90" checked onchange="updateBill()"><b>سادي وڊيو</b><span>90 رپيا</span></label>
-<label class="price-card"><input type="radio" name="quality" value="180" onchange="updateBill()"><b>شاندار وڊيو</b><span>180 رپيا</span></label>
+<label>وڊيو چونڊيو - فڪس ريٽ:</label>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<label class="price-card"><input type="radio" name="quality" value="110" data-duration="6" data-type="simple" checked onchange="updateBill()"><b>سادي وڊيو</b><span>6 سيڪنڊ - 110 رپيا</span></label>
+<label class="price-card"><input type="radio" name="quality" value="200" data-duration="10" data-type="simple" onchange="updateBill()"><b>سادي وڊيو</b><span>10 سيڪنڊ - 200 رپيا</span></label>
+<label class="price-card"><input type="radio" name="quality" value="180" data-duration="5" data-type="premium" onchange="updateBill()"><b>شاندار وڊيو</b><span>5 سيڪنڊ - 180 رپيا</span></label>
+<label class="price-card"><input type="radio" name="quality" value="300" data-duration="10" data-type="premium" onchange="updateBill()"><b>شاندار وڊيو</b><span>10 سيڪنڊ - 300 رپيا</span></label>
 </div>
-<div class="bill">بل: <b id="bill">90 رپيا</b></div>
+<div class="bill">بل: <b id="bill">110 رپيا</b></div>
 </div>
 <div class="card">
 <h3>پئسا موڪليو - جيز ڪيش</h3>
@@ -89,9 +123,34 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 let mode='text';
 function switchTab(m){mode=m;document.getElementById('tabText').classList.toggle('active',m==='text');document.getElementById('tabPhoto').classList.toggle('active',m==='photo');document.getElementById('textBox').classList.toggle('hidden',m!=='text');document.getElementById('photoBox').classList.toggle('hidden',m!=='photo');}
 function getPrice(){return document.querySelector('input[name="quality"]:checked').value;}
+function getSelected(){return document.querySelector('input[name="quality"]:checked');}
 function updateBill(){document.getElementById('bill').innerText=getPrice()+' رپيا';}
-function submitOrder(){const tid=document.getElementById('tid').value.trim();if(!tid){alert('TID لکو');return;}const o={id:'SM-'+Date.now().toString().slice(-6),mode,price:getPrice(),tid,status:'Approval Pending'};const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');all.unshift(o);localStorage.setItem('sindhi_orders',JSON.stringify(all));document.getElementById('msg').innerHTML='<b style="color:green">آرڊر ملي ويو!</b>';renderOrders();}
-function renderOrders(){const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');document.getElementById('orders').innerHTML=all.length?all.map(o=>`<div style="border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0"><b>${o.id}</b> - ${o.price} رپيا - TID:${o.tid} - ${o.status}</div>`).join(''):'اڃا ڪو آرڊر ناهي';}
+async function submitOrder(){
+  const tid=document.getElementById('tid').value.trim();
+  if(!tid){alert('TID لکو');return;}
+  const sel=getSelected();
+  const price=sel.value;
+  const duration=sel.getAttribute('data-duration');
+  const vtype=sel.getAttribute('data-type');
+  const prompt=document.getElementById('prompt').value || document.getElementById('photoPrompt').value || 'Sindhi boy smiling';
+  document.getElementById('msg').innerHTML='<b style="color:orange">وڊيو ٺهي رهي آهي... 1-2 منٽ ترسو...</b>';
+  const o={id:'SM-'+Date.now().toString().slice(-6),mode,price,tid,duration,status:'Video Ban Rahi Hai'};
+  const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');
+  all.unshift(o);localStorage.setItem('sindhi_orders',JSON.stringify(all));renderOrders();
+  try{
+    const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt,price:price,duration:duration,type:vtype,tid:tid})});
+    const data=await res.json();
+    if(data.success){
+      const vurl=data.data.video_url||'';
+      document.getElementById('msg').innerHTML='<b style="color:green">مبارڪ! توهان جي وڊيو تيار آهي!</b><br>'+(vurl?'<video width="100%" controls src="'+vurl+'"></video><p>وڊيو ڊائونلوڊ ڪري وٺو</p>':'');
+    }else{
+      document.getElementById('msg').innerHTML='<b style="color:red">وڊيو ۾ دير آهي، ٿوري دير کان پوءِ چيڪ ڪريو</b>';
+    }
+  }catch(e){
+    document.getElementById('msg').innerHTML='<b>آرڊر ملي ويو، وڊيو جلد ايندي</b>';
+  }
+}
+function renderOrders(){const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');document.getElementById('orders').innerHTML=all.length?all.map(o=>`<div style="border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0"><b>${o.id}</b> - ${o.price} رپيا - ${o.duration||''} سيڪنڊ - TID:${o.tid} - ${o.status}</div>`).join(''):'اڃا ڪو آرڊر ناهي';}
 renderOrders();
 </script>
 </body>
