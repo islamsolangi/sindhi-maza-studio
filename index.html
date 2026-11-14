@@ -19,6 +19,7 @@ textarea,input{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;
 .hidden{display:none}
 table{width:100%;border-collapse:collapse;font-size:14px}
 table tr.selected{background:#fff3cd}
+.download-btn{display:block;text-align:center;background:#0f5132;color:#fff;padding:13px;border-radius:10px;text-decoration:none;font-weight:800;margin-top:10px}
 </style>
 </head>
 <body>
@@ -37,18 +38,6 @@ table tr.selected{background:#fff3cd}
 </div>
 </div>
 
-<div class="card" style="text-align:center">
-<h3>قيمت لسٽ - فڪس ريٽ - هتان چونڊيو</h3>
-<table>
-<tr style="background:#0f5132;color:#fff"><th style="padding:8px;border:1px solid #ccc">چونڊ</th><th style="padding:8px;border:1px solid #ccc">وڊيو</th><th style="padding:8px;border:1px solid #ccc">ٽائيم</th><th style="padding:8px;border:1px solid #ccc">قيمت</th></tr>
-<tr onclick="selectRow(this,110,'6','simple')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="110" data-duration="6" data-type="simple" checked></td><td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td><td style="padding:8px;border:1px solid #ccc">6 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>110 رپيا</b></td></tr>
-<tr onclick="selectRow(this,200,'10','simple')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="200" data-duration="10" data-type="simple"></td><td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td><td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>200 رپيا</b></td></tr>
-<tr onclick="selectRow(this,180,'5','premium')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="180" data-duration="5" data-type="premium"></td><td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td><td style="padding:8px;border:1px solid #ccc">5 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>180 رپيا</b></td></tr>
-<tr onclick="selectRow(this,300,'10','premium')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="300" data-duration="10" data-type="premium"></td><td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td><td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>300 رپيا</b></td></tr>
-</table>
-<p style="font-size:12px;color:#666">ٽيبل ۾ ڪنهن به لائين تي ڪلڪ ڪري چونڊيو. قيمت فڪس آهي.</p>
-</div>
-
 <div class="tabs">
 <button id="tabText" class="tab active" onclick="switchTab('text')">لکي وڊيو ٺاهيو</button>
 <button id="tabPhoto" class="tab" onclick="switchTab('photo')">فوٽو مان وڊيو ٺاهيو</button>
@@ -62,6 +51,19 @@ table tr.selected{background:#fff3cd}
 <input type="file" id="photo" accept="image/*">
 <textarea id="photoPrompt" placeholder="مثال: هن کي کلايو"></textarea>
 </div>
+
+<div class="card" style="text-align:center">
+<h3>قيمت لسٽ - فڪس ريٽ - هتان چونڊيو</h3>
+<table>
+<tr style="background:#0f5132;color:#fff"><th style="padding:8px;border:1px solid #ccc">چونڊ</th><th style="padding:8px;border:1px solid #ccc">وڊيو</th><th style="padding:8px;border:1px solid #ccc">ٽائيم</th><th style="padding:8px;border:1px solid #ccc">قيمت</th></tr>
+<tr onclick="selectRow(this,110,'6','simple')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="110" data-duration="6" data-type="simple" checked></td><td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td><td style="padding:8px;border:1px solid #ccc">6 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>110 رپيا</b></td></tr>
+<tr onclick="selectRow(this,200,'10','simple')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="200" data-duration="10" data-type="simple"></td><td style="padding:8px;border:1px solid #ccc">سادي وڊيو</td><td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>200 رپيا</b></td></tr>
+<tr onclick="selectRow(this,180,'5','premium')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="180" data-duration="5" data-type="premium"></td><td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td><td style="padding:8px;border:1px solid #ccc">5 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>180 رپيا</b></td></tr>
+<tr onclick="selectRow(this,300,'10','premium')"><td style="padding:8px;border:1px solid #ccc"><input type="radio" name="quality" value="300" data-duration="10" data-type="premium"></td><td style="padding:8px;border:1px solid #ccc">شاندار وڊيو</td><td style="padding:8px;border:1px solid #ccc">10 سيڪنڊ</td><td style="padding:8px;border:1px solid #ccc"><b>300 رپيا</b></td></tr>
+</table>
+<p style="font-size:12px;color:#666">ٽيبل ۾ ڪنهن به لائين تي ڪلڪ ڪري چونڊيو. قيمت فڪس آهي.</p>
+</div>
+
 <div class="card">
 <h3>پئسا موڪليو - جيز ڪيش</h3>
 <p>نمبر هتي نظر نه ايندو. بٽڻ دٻائي پئسا موڪليو، پوءِ TID لکو.</p>
@@ -69,6 +71,10 @@ table tr.selected{background:#fff3cd}
 <input type="text" id="tid" placeholder="جيز ڪيش TID لکو" style="margin-top:10px">
 <button class="submit" onclick="submitOrder()">آرڊر موڪليو</button>
 <div id="msg"></div>
+<div id="downloadBox" class="hidden">
+<video id="finalVideo" width="100%" controls style="margin-top:10px"></video>
+<a id="downloadLink" href="#" download="sindhi-maza-video.mp4" class="download-btn">⬇️ وڊيو ڊائونلوڊ ڪريو</a>
+</div>
 </div>
 <div class="card"><h3>منهنجا آرڊر</h3><div id="orders"></div></div>
 </main>
@@ -83,13 +89,25 @@ async function submitOrder(){
   const sel=getSelected();const price=sel.value;const duration=sel.getAttribute('data-duration');const vtype=sel.getAttribute('data-type');
   const prompt=document.getElementById('prompt').value || document.getElementById('photoPrompt').value || 'Sindhi boy smiling';
   document.getElementById('msg').innerHTML='<b style="color:orange">وڊيو ٺهي رهي آهي... 1-2 منٽ ترسو...</b>';
+  document.getElementById('downloadBox').classList.add('hidden');
   const o={id:'SM-'+Date.now().toString().slice(-6),mode,price,tid,duration,status:'Video Ban Rahi Hai'};
   const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');all.unshift(o);localStorage.setItem('sindhi_orders',JSON.stringify(all));renderOrders();
   try{
     const res=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:prompt,price:price,duration:duration,type:vtype,tid:tid})});
     const data=await res.json();
-    if(data.success){const vurl=data.data.video_url||'';document.getElementById('msg').innerHTML='<b style="color:green">مبارڪ! توهان جي وڊيو تيار آهي!</b><br>'+(vurl?'<video width="100%" controls src="'+vurl+'"></video>':'');}
-    else{document.getElementById('msg').innerHTML='<b style="color:red">وڊيو ۾ دير آهي، ٿوري دير کان پوءِ چيڪ ڪريو</b>';}
+    if(data.success){
+      const vurl=data.data.video_url||'';
+      if(vurl){
+        document.getElementById('msg').innerHTML='<b style="color:green">مبارڪ! توهان جي وڊيو تيار آهي!</b>';
+        document.getElementById('finalVideo').src=vurl;
+        document.getElementById('downloadLink').href=vurl;
+        document.getElementById('downloadBox').classList.remove('hidden');
+      } else {
+        document.getElementById('msg').innerHTML='<b style="color:green">مبارڪ! آرڊر ملي ويو، وڊيو جلد ايندي</b>';
+      }
+    } else {
+      document.getElementById('msg').innerHTML='<b style="color:red">وڊيو ۾ دير آهي، ٿوري دير کان پوءِ چيڪ ڪريو</b>';
+    }
   }catch(e){document.getElementById('msg').innerHTML='<b>آرڊر ملي ويو، وڊيو جلد ايندي</b>';}
 }
 function renderOrders(){const all=JSON.parse(localStorage.getItem('sindhi_orders')||'[]');document.getElementById('orders').innerHTML=all.length?all.map(o=>`<div style="border:1px solid #ddd;padding:10px;border-radius:10px;margin:6px 0"><b>${o.id}</b> - ${o.price} رپيا - ${o.duration||''} سيڪنڊ - TID:${o.tid} - ${o.status}</div>`).join(''):'اڃا ڪو آرڊر ناهي';}
