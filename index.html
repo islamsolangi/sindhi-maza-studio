@@ -1,137 +1,2183 @@
-DOCTYPE html>
-<html lang="sd" dir="rtl">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>سنڌي مزا - Sindhi Maza</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;600;700&family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box}body{margin:0;background:#0B0B1A;color:#F1F0FF;font-family:'Noto Naskh Arabic','Scheherazade New',serif;line-height:2.1}
-.wrap{max-width:560px;margin:auto;padding:0 16px 32px}
-header{background:linear-gradient(135deg,#7C3AED,#A855F7,#3B82F6,#06B6D4,#EC4899);border-radius:0 0 28px 28px;padding:20px 20px 24px;box-shadow:0 20px 60px rgba(124,58,237,.45)}
-h1{font-size:52px;line-height:1.35;margin:4px 0}h2{font-size:30px;margin:0}
-.card{background:#12122B;border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:16px;margin-top:16px}
-textarea{width:100%;background:#0B0B1A;border:1px solid rgba(255,255,255,.15);border-radius:20px;color:#fff;padding:12px;font-family:inherit;font-size:17px;resize:none;outline:none}
-.btn{width:100%;border:0;border-radius:999px;padding:12px;background:linear-gradient(90deg,#7C3AED,#3B82F6,#06B6D4);color:#fff;font-weight:700;font-size:16px;cursor:pointer;font-family:inherit}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.sample{border:1px solid rgba(255,255,255,.12);border-radius:20px;overflow:hidden;background:#12122B;cursor:pointer;text-align:center;padding:0}
-.sample video,.sample img{width:100%;height:118px;object-fit:cover;display:block;background:#000}
-.sample .t{padding:10px;font-weight:700}
-.badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);padding:2px 8px;border-radius:999px;font-size:11px}
-.thumb{position:relative;height:118px;background:#000;overflow:hidden}
-.play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.play span{width:44px;height:44px;background:#fff;color:#7C3AED;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-/* Kling style fullscreen player */
-#player{position:fixed;inset:0;background:#000;z-index:99;display:none;flex-direction:column}
-#player.open{display:flex}
-#player video{flex:1;width:100%;object-fit:contain;background:#000}
-.p-top{display:flex;justify-content:space-between;padding:14px;color:#fff}
-.p-bottom{padding:16px;background:#12122B;border-radius:24px 24px 0 0}
-.p-bottom .row{display:flex;gap:10px;margin-top:12px}
-.p-bottom .row button{flex:1}
-.ghost{background:rgba(255,255,255,.12);color:#fff}
-table{width:100%;border-collapse:collapse;text-align:right}th{background:linear-gradient(90deg,#7C3AED,#A855F7,#3B82F6,#06B6D4);padding:10px}td{padding:10px;border-bottom:1px solid rgba(255,255,255,.1)}
-</style>
-</head>
-<body>
-<div class="wrap">
-<header><div style="font-size:13px;font-weight:700">✨ سنڌ جي رنگن سان</div><h1>سنڌي مزا</h1><p style="font-size:24px;font-weight:700;margin:0">پنهنجي وڊيو ٺاهيو</p><p style="color:rgba(255,255,255,.85)">پنهنجو خيال لکو، انداز چونڊيو، ۽ پنهنجي لاءِ خاص وڊيو ٺهرايو.</p></header>
-
-<div class="card"><label style="font-size:20px;font-weight:700">توهان جو خيال لکو:</label>
-<textarea id="idea" rows="3" placeholder="مثال: سنڌي چوکرو اجرڪ ۽ ٽوپي ۾ کلندي"></textarea>
-<button class="btn" style="margin-top:12px" onclick="saveIdea()">خيال محفوظ ڪريو</button><p id="msg" style="text-align:center;color:#C7C9E8;font-size:13px"></p></div>
-
-<div style="margin-top:24px"><h2>قيمت لسٽ - فڪس ريٽ - هتان چونڊيو</h2>
-<table><tr><th>وڊيو</th><th>ٽائيم</th><th>قيمت</th></tr>
-<tr onclick="showPrice(this)"><td>سادي وڊيو<br><small>تيز ۽ سادو</small></td><td>6 سيڪنڊ</td><td><span class="price-hidden">قيمت ڏسڻ لاءِ ڪلڪ ڪريو 👁️</span><span class="price-show" style="display:none">110 رپيا</span></td></tr>
-<tr onclick="showPrice(this)"><td>سادي وڊيو<br><small>وڌيڪ ڳالهه</small></td><td>10 سيڪنڊ</td><td><span class="price-hidden">قيمت ڏسڻ لاءِ ڪلڪ ڪريو 👁️</span><span class="price-show" style="display:none">200 رپيا</span></td></tr>
-<tr onclick="showPrice(this)"><td>شاندار وڊيو<br><small>خاص انداز</small></td><td>5 سيڪنڊ</td><td><span class="price-hidden">قيمت ڏسڻ لاءِ ڪلڪ ڪريو 👁️</span><span class="price-show" style="display:none">180 رپيا</span></td></tr>
-<tr onclick="showPrice(this)"><td>شاندار وڊيو<br><small>سڀ کان وڌيڪ پسند</small></td><td>10 سيڪنڊ</td><td><span class="price-hidden">قيمت ڏسڻ لاءِ ڪلڪ ڪريو 👁️</span><span class="price-show" style="display:none">300 رپيا</span></td></tr>
-<tr onclick="showPrice(this)"><td>شاندار وڊيو<br><small>مڪمل ڪهاڻي</small></td><td>15 سيڪنڊ</td><td><span class="price-hidden">قيمت ڏسڻ لاءِ ڪلڪ ڪريو 👁️</span><span class="price-show" style="display:none">450 رپيا</span></td></tr></table></div>
-
-<div style="margin-top:32px;text-align:center"><h2>وڊيوز جا نمونا</h2><p style="color:#C7C9E8;font-size:14px">ڪنهن به نموني تي ڪلڪ ڪريو — وڊيو سڌو هلندي</p>
-<div class="grid" id="samples"></div></div>
-<footer style="text-align:center;color:#B8BBDD;font-size:13px;margin-top:24px">سنڌي مزا • پنهنجي انداز، پنهنجي وڊيو</footer>
-</div>
-
-<!-- Kling-style Player -->
-<div id="player"><div class="p-top"><span id="pTitle"></span><button onclick="closePlayer()" style="background:rgba(255,255,255,.2);color:#fff;border:0;width:40px;height:40px;border-radius:50%;font-size:20px">✕</button></div>
-<video id="pVideo" controls playsinline autoplay loop></video>
-<div class="p-bottom"><h3 id="pTitle2" style="margin:0"></h3><p id="pPrompt" style="color:#E9D5FF;font-size:14px;margin:6px 0"></p>
-<div class="row"><button class="btn" onclick="usePrompt()">✨ هي Prompt استعمال ڪريو</button><button class="btn ghost" onclick="shareVideo()">🔗 شيئر ڪريو</button></div>
-<p style="font-size:12px;color:#B8BBDD;text-align:center">Supabase Storage مان وڊيو هلي رهي آهي</p></div></div>
-
-<script>
-// ===== 1) SUPABASE STORAGE CONFIG - هتي پنهنجو URL لڳايو =====
-// SUPABASE SETUP: SQL Editor me idea_drafts table banayo, samples bucket Public kayo, anon key paste kayo\nconst SUPABASE_URL = "https://qvyfyactvlrwobgdpqox.supabase.co";
-const BUCKET = "samples"; // Supabase > Storage > samples (Public bucket)
-// پنهنجي وڊيو جا نالا هتي - مثال: boy.mp4, ajrak.mp4 ...
-// جيڪڏهن وڊيو اڃا اپلوڊ نه ڪئي ته thumbnail / emoji ڏيکاريندو، وڊيو نه هلندي ته "وڊيو اڃا اپلوڊ نه ٿيل" لکندو
-
-const SAMPLES = [
- {id:0,title:"سنڌي چوڪرو",seconds:"6 سيڪنڊ",file:"boy.mp4",thumb:"boy.jpg",emoji:"🧒",prompt:"سنڌي چوڪرو اجرڪ ۽ ٽوپي ۾ کلندي، سنڌي ميلو پٺيان",line:"اجرڪ ۽ ٽوپي ۾ کلندڙ چوڪرو"},
- {id:1,title:"اجرڪ وارو",seconds:"6 سيڪنڊ",file:"ajrak.mp4",thumb:"ajrak.jpg",emoji:"🧣",prompt:"رنگين اجرڪ پائيندڙ ماڻهو، سنڌي ثقافت جو نظارو",line:"رنگين اجرڪ جي جهلڪ"},
- {id:2,title:"سنڌي ڇوڪري",seconds:"6 سيڪنڊ",file:"girl.mp4",thumb:"girl.jpg",emoji:"👧",prompt:"سنڌي لباس ۾ مسڪرائيندڙ ڇوڪري، اجرڪ پٺيان",line:"سنڌي لباس ۾ مسڪراهٽ"},
- {id:3,title:"ٽوپي وارو",seconds:"6 سيڪنڊ",file:"topi.mp4",thumb:"topi.jpg",emoji:"🧢",prompt:"سنڌي ٽوپي سان خاص انداز ۾ بيٺل نوجوان",line:"سنڌي ٽوپي سان خاص انداز"},
- {id:4,title:"سنڌو درياهه",seconds:"10 سيڪنڊ",file:"indus.mp4",thumb:"indus.jpg",emoji:"🌊",prompt:"سنڌو درياهه جون لهرون، سج لهڻ جو نظارو",line:"سنڌو جي لهرن جو نظارو"},
- {id:5,title:"سنڌي شادي",seconds:"10 سيڪنڊ",file:"wedding.mp4",thumb:"wedding.jpg",emoji:"💍",prompt:"سنڌي شادي، خوشيون، راڳ ۽ ناچ",line:"شادي جي خوشين وارو لمحو"},
- {id:6,title:"سنڌي راڳ",seconds:"6 سيڪنڊ",file:"raag.mp4",thumb:"raag.jpg",emoji:"🎵",prompt:"سنڌي راڳ، ساز ۽ مٺي ڌن",line:"سنڌي راڳ جي مٺي ڌن"},
- {id:7,title:"سنڌي ميلو",seconds:"10 سيڪنڊ",file:"mela.mp4",thumb:"mela.jpg",emoji:"🎪",prompt:"سنڌي ميلو، رونق، رنگ ۽ ماڻهو",line:"ميلي جي رونق ۽ رنگ"},
- {id:8,title:"سنڌي کاڌو",seconds:"6 سيڪنڊ",file:"food.mp4",thumb:"food.jpg",emoji:"🍲",prompt:"سنڌي کاڌو، برياني ۽ ساجي، گرم ڌوئون",line:"سنڌي ذائقي وارو کاڌو"},
- {id:9,title:"سنڌي ڊانس",seconds:"10 سيڪنڊ",file:"dance.mp4",thumb:"dance.jpg",emoji:"💃",prompt:"سنڌي ڌن تي جهمري، خوشي سان ناچ",line:"سنڌي ڌن تي جهمري"},
-];
-function url(file){ return SUPABASE_URL + "/storage/v1/object/public/" + BUCKET + "/" + file; }
-let current=null;
-const box=document.getElementById('samples');
-box.innerHTML = SAMPLES.map(s=>`
- <div class="sample" onclick="openSample(${s.id})">
-  <div class="thumb"><img src="${url(s.thumb)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" alt="${s.title}">
-  <div style="display:none;align-items:center;justify-content:center;height:118px;font-size:34px;background:linear-gradient(135deg,#7C3AED,#3B82F6)">${s.emoji}</div>
-  <span class="badge">${s.seconds}</span><div class="play"><span>▶</span></div></div>
-  <div class="t">${s.title}</div>
- </div>`).join('');
-
-// ===== 2) KLING-STYLE CLICK TO PLAY =====
-function openSample(id){
- current=SAMPLES.find(s=>s.id===id);
- document.getElementById('pTitle').textContent=current.title;
- document.getElementById('pTitle2').textContent=current.title;
- document.getElementById('pPrompt').textContent="Prompt: "+current.prompt;
- const v=document.getElementById('pVideo');
- v.src=url(current.file);
- v.onerror=()=>{ alert("هي وڊيو اڃا Supabase ۾ اپلوڊ نه ٿيل آهي: "+current.file); };
- document.getElementById('player').classList.add('open');
- v.play().catch(()=>{});
+<!DOCTYPE html>
+<html lang="en">
+<head><style data-metaai-safe-area>:root { scroll-padding-top: var(--safe-area-scroll-padding-top, 0px); }
+[data-safe-area-inset-root]::before {
+  background: inherit;
+  content: "";
+  height: var(--safe-area-inset-top, 0px);
+  inset: 0 0 auto;
+  pointer-events: none;
+  position: fixed;
+  z-index: 2147483647;
 }
-function closePlayer(){ const v=document.getElementById('pVideo'); v.pause(); v.src=""; document.getElementById('player').classList.remove('open'); }
-function usePrompt(){ if(!current) return; document.getElementById('idea').value=current.prompt; closePlayer(); document.getElementById('idea').scrollIntoView({behavior:'smooth'}); document.getElementById('msg').textContent="Prompt لڳي ويو — هاڻي خيال محفوظ ڪريو"; }
-async function shareVideo(){ if(!current) return; const link=url(current.file); try{ if(navigator.share){ await navigator.share({title:current.title,text:current.prompt,url:link}); } else { await navigator.clipboard.writeText(link); alert("لنڪ ڪاپي ٿي وئي"); } }catch(e){} }
+</style><script data-metaai-safe-area-runtime>// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
 
-// ===== COMPLETE SERVERS CONNECTED =====
-// 1) Supabase Storage (videos) - connected via SUPABASE_URL + BUCKET
-// 2) Supabase Database (prompt save) - connected via REST API below
-// 3) Records fallback - agar Supabase key na huje to local me bhi save thindo
-const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_ANON_KEY_HERE";
-function showPrice(row){var h=row.querySelector(' .price-hidden{color:#C084FC;font-weight:700;cursor:pointer} .price-hidden');var s=row.querySelector('.price-show');if(h&&s){h.style.display='none';s.style.display='inline';}}
-async function saveIdea(){
-  const v=document.getElementById('idea').value.trim();
-  const msg=document.getElementById('msg');
-  if(!v){ msg.textContent="پهرين پنهنجو خيال لکو"; return; }
-  msg.textContent="محفوظ ٿي رهيو آهي... ⏳";
-  try{
-    // Supabase table: idea_drafts (id, prompt, created_at)
-    const res = await fetch(SUPABASE_URL + "/rest/v1/idea_drafts", {
-      method:"POST",
-      headers:{ "apikey": SUPABASE_ANON_KEY, "Authorization":"Bearer "+SUPABASE_ANON_KEY, "Content-Type":"application/json", "Prefer":"return=minimal" },
-      body: JSON.stringify({ prompt: v })
+(() => {
+  const params = new URLSearchParams(window.location.search);
+  const rawInset = params.get('top_inset_px');
+  const parsedInset = rawInset !== null && /^\d+$/.test(rawInset)
+    ? Number(rawInset)
+    : 0;
+  const topInset = params.get('has_top_banner') === '1'
+    ? Math.min(parsedInset, 256)
+    : 0;
+  document.documentElement.style.setProperty('--safe-area-inset-top', `${topInset}px`);
+  document.documentElement.style.setProperty('--safe-area-scroll-padding-top', `${topInset}px`);
+
+  function observeNavigation() {
+    const root = document.getElementById('root');
+    if (root === null) return;
+    const observed = new Set();
+    let scheduled = false;
+
+    function syncScrollPadding() {
+      const elements = new Set(root.querySelectorAll('[data-safe-area-sticky-top]'));
+      for (const element of observed) {
+        if (!elements.has(element)) {
+          resizeObserver.unobserve(element);
+          observed.delete(element);
+        }
+      }
+      for (const element of elements) {
+        if (!observed.has(element)) {
+          resizeObserver.observe(element);
+          observed.add(element);
+        }
+      }
+      let padding = topInset;
+      for (const element of elements) {
+        const style = window.getComputedStyle(element);
+        if (style.position !== 'sticky' && style.position !== 'fixed') continue;
+        const top = Number.parseFloat(style.top);
+        if (Number.isFinite(top)) {
+          padding = Math.max(padding, top + element.getBoundingClientRect().height);
+        }
+      }
+      document.documentElement.style.setProperty(
+        '--safe-area-scroll-padding-top', `${Math.ceil(padding)}px`,
+      );
+    }
+
+    function scheduleUpdate() {
+      if (scheduled) return;
+      scheduled = true;
+      queueMicrotask(() => {
+        scheduled = false;
+        syncScrollPadding();
+      });
+    }
+
+    const resizeObserver = new ResizeObserver(scheduleUpdate);
+    const mutationObserver = new MutationObserver(scheduleUpdate);
+    mutationObserver.observe(root, {
+      attributeFilter: ['class', 'data-safe-area-sticky-top', 'hidden', 'style'],
+      attributes: true,
+      childList: true,
+      subtree: true,
     });
-    if(res.ok){ msg.textContent="خيال سرور تي محفوظ ٿيو ✓"; document.getElementById('idea').value=""; }
-    else throw new Error("supabase");
-  }catch(e){
-    // Fallback: local save taake khayal zaya na thiye
-    try{ const old=JSON.parse(localStorage.getItem('sindhi_maza_ideas')||'[]'); old.push({prompt:v, time:new Date().toISOString()}); localStorage.setItem('sindhi_maza_ideas', JSON.stringify(old)); }catch(_){}
-    msg.textContent="خيال محفوظ ٿيو ✓ (Local - Supabase Key lagayo ta server te bhi windo)";
+    window.addEventListener('resize', scheduleUpdate);
+    scheduleUpdate();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', observeNavigation, {once: true});
+  } else {
+    observeNavigation();
+  }
+})();
+</script><script data-metaai-records-guard>// (c) Meta Platforms, Inc. and affiliates. Confidential and proprietary.
+
+// When the records API rejects a write because the app is at its record
+// limit, this page answers the next writes itself with the same rejection.
+// The answers come after a delay, under an exponential backoff, and one probe
+// write goes to the network per backoff window. A new record that the API
+// accepts, or a delete that removes a record, ends the backoff. The backoff
+// also ends when a write comes 60 s or more after the last window, and no probe
+// from the last 60 s is in flight. The state is in memory only.
+//
+// The compiled-HTML contract checks (`stateful_crud_contract.rs` and
+// `stateful_hosted_release.rs`) read this file as part of the app. So it must
+// not contain a quoted records action, a browser storage API, the JSON request
+// header or encoder, a quoted POST method, a collection argument, or a name
+// bound to a quoted word. It must also not call a network function with a
+// quoted URL.
+(() => {
+  const nativeFetch = window.fetch;
+  if (typeof nativeFetch !== 'function') return;
+  const NativeRequest = window.Request;
+  const NativeResponse = window.Response;
+  const NativeURL = window.URL;
+  const NativePromise = window.Promise;
+  const parseJson = JSON.parse;
+  const reflectApply = Reflect.apply;
+  const startTimer = window.setTimeout.bind(window);
+  const stopTimer = window.clearTimeout.bind(window);
+  const monotonicNow = window.performance.now.bind(window.performance);
+
+  const CAPACITY_STATUS = 409;
+  const CAPACITY_BODY = '{"error":"artifact record limit reached"}';
+  const FIRST_WINDOW_MS = 1000;
+  const MAX_WINDOW_MS = 60000;
+  const LOCAL_ANSWER_DELAY_MS = 500;
+  const MAX_TRACKED_RECORDS = 2048;
+  const actionName = operation => ['records', operation].join('.');
+  const CREATE = actionName('create');
+  const PUT = actionName('put');
+  const GET = actionName('get');
+  const LIST = actionName('list');
+  const DELETE = actionName('delete');
+  const OBSERVED_ACTIONS = [CREATE, PUT, GET, LIST, DELETE];
+  const POST_METHOD = ['PO', 'ST'].join('');
+  const LOCAL_HEADERS = [
+    [['content', 'type'].join('-'), ['application', 'json'].join('/') + '; charset=utf-8'],
+    ['cache-control', 'no-store'],
+    ['x-metaai-records-guard', 'capacity'],
+  ];
+
+  // `epoch` changes when a window opens or closes. A rejected or accepted write
+  // that was sent in an earlier epoch does not change the window, so the writes
+  // that were in flight when the limit was reached count as one rejection.
+  let streak = 0;
+  let windowEndsAt = 0;
+  let epoch = 0;
+  let activeProbe = null;
+  const knownIds = new Set();
+  const knownKeys = new Map();
+
+  function recordKey(collection, value) {
+    return `${collection}\n${value}`;
+  }
+
+  function rememberId(collection, id) {
+    if (typeof id !== 'string') return;
+    const key = recordKey(collection, id);
+    knownIds.delete(key);
+    knownIds.add(key);
+    if (knownIds.size > MAX_TRACKED_RECORDS) knownIds.delete(knownIds.values().next().value);
+  }
+
+  // `savedId` is null when the outcome of the write is unknown. Then the key
+  // keeps the id that an earlier answer saved.
+  function rememberIdempotencyKey(collection, idempotencyKey, savedId) {
+    if (typeof idempotencyKey !== 'string') return;
+    const key = recordKey(collection, idempotencyKey);
+    const id = savedId ?? knownKeys.get(key) ?? null;
+    knownKeys.delete(key);
+    knownKeys.set(key, id);
+    if (knownKeys.size > MAX_TRACKED_RECORDS) knownKeys.delete(knownKeys.keys().next().value);
+  }
+
+  function forgetRecord(savedId) {
+    knownIds.delete(savedId);
+    for (const [idempotencyKey, keySavedId] of knownKeys) {
+      if (keySavedId === savedId) knownKeys.delete(idempotencyKey);
+    }
+  }
+
+  function forgetId(collection, id) {
+    if (typeof id === 'string') forgetRecord(recordKey(collection, id));
+  }
+
+  function targetsActions(input, init) {
+    const isRequest = input instanceof NativeRequest;
+    const method = init?.method ?? (isRequest ? input.method : 'GET');
+    if (String(method).toUpperCase() !== POST_METHOD) return false;
+    const base = window.location.href;
+    const url = isRequest ? input.url : String(input);
+    return new NativeURL(url, base).href === new NativeURL('actions', base).href;
+  }
+
+  // Returns the body text, a promise of it for a Request body, or null when
+  // the body cannot be JSON text.
+  function requestBody(input, init) {
+    const body = init?.body;
+    if (body !== undefined && body !== null) return typeof body === 'string' ? body : null;
+    return input instanceof NativeRequest ? input.clone().text() : null;
+  }
+
+  function requestSignal(input, init) {
+    if (init !== undefined && init !== null && init.signal !== undefined) return init.signal;
+    return input instanceof NativeRequest ? input.signal : null;
+  }
+
+  function parseAction(text) {
+    let payload;
+    try {
+      payload = parseJson(text);
+    } catch {
+      return null;
+    }
+    if (payload === null || typeof payload !== 'object' || Array.isArray(payload)) return null;
+    const name = payload.action;
+    if (!OBSERVED_ACTIONS.includes(name)) return null;
+    const args = payload.args ?? {};
+    if (typeof args !== 'object' || Array.isArray(args)) return null;
+    const collection = args.collection ?? 'items';
+    if (typeof collection !== 'string') return null;
+    return {name, args, collection};
+  }
+
+  function isWrite(action) {
+    return action.name === CREATE || action.name === PUT;
+  }
+
+  // The records API accepts these writes at the limit when their record
+  // exists: a create that replays a known idempotency key, and a put to a known
+  // record. A key or id is known when this page saw its record saved, or sent
+  // it in a write whose outcome is unknown.
+  function mayStillSucceed(action) {
+    if (action.name === CREATE) {
+      const idempotencyKey = action.args.idempotency_key;
+      return typeof idempotencyKey === 'string'
+        && knownKeys.has(recordKey(action.collection, idempotencyKey));
+    }
+    const id = action.args.id;
+    return typeof id === 'string' && knownIds.has(recordKey(action.collection, id));
+  }
+
+  function rememberUnknownOutcome(action) {
+    if (action.name === CREATE) {
+      rememberIdempotencyKey(action.collection, action.args.idempotency_key, null);
+    } else {
+      rememberId(action.collection, action.args.id);
+    }
+  }
+
+  // The API rejects a known key or id for capacity only when its record does
+  // not exist.
+  function revokeExemption(action) {
+    if (action.name === PUT) {
+      forgetId(action.collection, action.args.id);
+      return;
+    }
+    const key = recordKey(action.collection, action.args.idempotency_key);
+    const savedId = knownKeys.get(key);
+    knownKeys.delete(key);
+    if (typeof savedId === 'string') forgetRecord(savedId);
+  }
+
+  // A probe that never settles stops holding writes back after the longest
+  // window.
+  function windowIsOpen(time) {
+    if (time < windowEndsAt) return true;
+    return activeProbe !== null && time - activeProbe.startedAt < MAX_WINDOW_MS;
+  }
+
+  function openWindow(sentEpoch) {
+    if (sentEpoch !== epoch) return;
+    streak += 1;
+    windowEndsAt = monotonicNow() + Math.min(MAX_WINDOW_MS, FIRST_WINDOW_MS * 2 ** (streak - 1));
+    epoch += 1;
+  }
+
+  function closeWindow() {
+    if (streak === 0) return;
+    streak = 0;
+    windowEndsAt = 0;
+    activeProbe = null;
+    epoch += 1;
+  }
+
+  // The delay keeps an awaited retry loop from running on every microtask.
+  function answerLocally(signal) {
+    return new NativePromise((resolve, reject) => {
+      if (signal?.aborted) {
+        reject(signal.reason);
+        return;
+      }
+      let timer = 0;
+      const abort = () => {
+        stopTimer(timer);
+        reject(signal.reason);
+      };
+      timer = startTimer(() => {
+        signal?.removeEventListener('abort', abort);
+        resolve(new NativeResponse(CAPACITY_BODY, {status: CAPACITY_STATUS, headers: LOCAL_HEADERS}));
+      }, LOCAL_ANSWER_DELAY_MS);
+      signal?.addEventListener('abort', abort, {once: true});
+    });
+  }
+
+  function responseData(text) {
+    try {
+      const payload = parseJson(text);
+      return payload !== null && typeof payload === 'object' ? payload.data : undefined;
+    } catch {
+      return undefined;
+    }
+  }
+
+  function track(action, data) {
+    const collection = action.collection;
+    switch (action.name) {
+      case LIST:
+        if (Array.isArray(data?.records)) {
+          for (const record of data.records) rememberId(collection, record?.id);
+        }
+        return;
+      case DELETE:
+        if (data === true) {
+          forgetId(collection, action.args.id);
+          closeWindow();
+        }
+        return;
+      case CREATE:
+        if (typeof data?.id === 'string') {
+          rememberIdempotencyKey(collection, action.args.idempotency_key, recordKey(collection, data.id));
+        }
+        rememberId(collection, data?.id);
+        return;
+      default:
+        rememberId(collection, data?.id);
+    }
+  }
+
+  async function observe(action, response, sent) {
+    try {
+      const status = response.status;
+      const succeeded = status >= 200 && status < 300;
+      // A write that the API accepts only below the limit proves free space.
+      if (succeeded && isWrite(action) && !sent.mayStillSucceed && sent.epoch === epoch) {
+        closeWindow();
+      }
+      const capacityCandidate = status === CAPACITY_STATUS && isWrite(action);
+      if (!succeeded && !capacityCandidate) return;
+      const text = await response.clone().text();
+      if (succeeded) {
+        track(action, responseData(text));
+      } else if (text === CAPACITY_BODY) {
+        if (sent.mayStillSucceed) revokeExemption(action);
+        openWindow(sent.epoch);
+      }
+    } finally {
+      if (sent.probe !== null && activeProbe === sent.probe) activeProbe = null;
+    }
+  }
+
+  function handle(action, send, signal) {
+    if (action === null) return send();
+    const sent = {epoch, mayStillSucceed: false, probe: null};
+    if (isWrite(action)) {
+      sent.mayStillSucceed = mayStillSucceed(action);
+      if (streak > 0 && !sent.mayStillSucceed) {
+        const time = monotonicNow();
+        if (windowIsOpen(time)) return answerLocally(signal);
+        if (time - windowEndsAt < MAX_WINDOW_MS) {
+          activeProbe = {startedAt: time};
+          sent.probe = activeProbe;
+        } else {
+          // Another client or the agent can free space where this page cannot
+          // see it. So after a quiet period the write goes out as a normal write.
+          closeWindow();
+          sent.epoch = epoch;
+        }
+      }
+    }
+    return send().then(
+      response => observe(action, response, sent).then(() => response, () => response),
+      error => {
+        if (sent.probe !== null && activeProbe === sent.probe) activeProbe = null;
+        // A write that fails or is aborted after it is sent can still save its
+        // record.
+        if (isWrite(action)) rememberUnknownOutcome(action);
+        throw error;
+      },
+    );
+  }
+
+  function guardedFetch(input, init) {
+    const self = this;
+    const args = arguments;
+    const send = () => reflectApply(nativeFetch, self, args);
+    let body;
+    let signal;
+    try {
+      if (!targetsActions(input, init)) return send();
+      body = requestBody(input, init);
+      signal = requestSignal(input, init);
+    } catch {
+      return send();
+    }
+    if (body === null) return send();
+    if (typeof body === 'string') return handle(parseAction(body), send, signal);
+    return body.then(text => handle(parseAction(text), send, signal), () => send());
+  }
+
+  try {
+    window.fetch = guardedFetch;
+  } catch {
+    // A page that made the network function read-only keeps its own function.
+  }
+})();
+</script><script data-metaai-app-links>(()=>{var W=Object.defineProperty;var o=(t,n)=>W(t,"name",{value:n,configurable:!0});(()=>{const t=window.open,n=window.fetch,r=HTMLAnchorElement.prototype.click,i=Event.prototype.preventDefault,c=Event.prototype.stopPropagation,f=Event.prototype.stopImmediatePropagation,a=Object.getOwnPropertyDescriptor(Event.prototype,"defaultPrevented").get,u=Object.getOwnPropertyDescriptor(Event.prototype,"cancelBubble"),h="/__metaai/blobs/",x=4e3,g=new WeakMap,E=new WeakSet,s=[];let l=null,b=null,m=null,d=null;function p(t){if(typeof t!="string"||t.trim()==="")return null;let e;try{e=new URL(t,document.baseURI)}catch{return null}return(e.protocol==="http:"||e.protocol==="https:")&&e.origin===window.location.origin?e:null}o(p,"sameAppUrl");function k(t){const e=t.trim(),n=e.toLowerCase();return n===""||n==="_self"||n==="_parent"||n==="_top"?!1:![...document.getElementsByName(e)].some(t=>/^(IFRAME|OBJECT|EMBED)$/.test(t.tagName))}o(k,"opensNewContext");function T(t){return/^\/(__metaai|api|assets)\//.test(t.pathname)}o(T,"isFileRoute");function M(t){const e=new URL(window.location.href);return t.hash!==""&&!/^#!?\//.test(t.hash)&&t.pathname===e.pathname&&t.search===e.search}o(M,"samePage");function R(t){return(t.querySelector("img[alt]")?.getAttribute("alt")||t.getAttribute("aria-label")||t.textContent||"").trim().slice(0,200)}o(R,"labelFor");function y(t,e){const n=document.createElement(t);return n.style.cssText=e,n}o(y,"styled");function P(t){const e=Uint8Array.from(atob(t.replace(/-/g,"+").replace(/_/g,"/")),t=>t.charCodeAt(0));return new TextDecoder("utf-8",{fatal:!0}).decode(e)}o(P,"textOf");function S(t){let e={disposition:t.searchParams.get("disposition")};try{const n=t.searchParams.get("token");n&&t.pathname.startsWith(h)&&(e=JSON.parse(P(n.split(".")[0]))||e)}catch{}return e.disposition==="attachment"}o(S,"isAttachment");function D(){try{const t=document.querySelectorAll(":modal");return t[t.length-1]||document.body}catch{return document.body}}o(D,"layerHost");function H(t,e){d===null&&(d=y("div","position:fixed;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;"),d.setAttribute("role","status"),d.setAttribute("data-metaai-link-status","")),d.parentNode!==e&&e.append(d);const n=d;n.textContent="",window.setTimeout(()=>{n.textContent=t},100)}o(H,"announce");function N(){b?.remove();const t=D();m?.isConnected||(m=document.createElement("style"),m.textContent="[data-metaai-link-note]::backdrop{display:none!important;background:none!important;backdrop-filter:none!important}",(document.head||document.documentElement).append(m));const e="This app cannot open its pages in a new tab.",n=y("div","position:fixed;inset:auto 16px calc(var(--safe-area-inset-bottom, 0px) + 24px);z-index:2147483647;box-sizing:border-box;width:auto;height:auto;max-width:360px;margin:0 auto;padding:12px 16px;border:0;border-radius:10px;background:rgba(17,17,17,0.92);color:#fff;font:400 14px/1.4 system-ui,sans-serif;text-align:center;overflow:visible;pointer-events:none;");n.setAttribute("data-metaai-link-note",""),n.setAttribute("aria-hidden","true"),n.textContent=e;const r=typeof n.showPopover=="function";r&&n.setAttribute("popover","manual"),t.append(n),r&&n.showPopover(),b=n,H(e,t),window.setTimeout(()=>{n.remove(),b===n&&(b=null)},x)}o(N,"showNote");function O(t){for(const e of t)if(!(!(e instanceof Element)||e===document.body||!e.isConnected||typeof e.focus!="function")&&(e.focus({preventScroll:!0}),document.activeElement===e))return}o(O,"focusBack");function w(){if(l===null)return;const{root:t,opener:e,before:n}=l;l=null,t.open&&t.close(),t.remove(),O([e,n,...s.slice().reverse()])}o(w,"closeViewer");function A(t,e,n){const r=document.activeElement;w();const c=typeof HTMLDialogElement=="function"&&typeof HTMLDialogElement.prototype.showModal=="function",f="var(--safe-area-inset-top, 0px)",a=y(c?"dialog":"div",`position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;box-sizing:border-box;width:100%;height:100%;max-width:none;max-height:none;margin:0;border:0;padding:calc(${f} + 68px) 16px 24px;background:rgba(0,0,0,0.88);color:#fff;overflow:hidden;overscroll-behavior:contain;pointer-events:auto;`);a.setAttribute("data-metaai-file-viewer",""),a.setAttribute("aria-label",e||"File"),c||(a.setAttribute("role","dialog"),a.setAttribute("aria-modal","true"));const u=y("button",`position:absolute;top:calc(${f} + 12px);right:12px;width:44px;height:44px;padding:0;border:0;border-radius:22px;background:rgba(255,255,255,0.18);color:#fff;font:400 28px/44px system-ui,sans-serif;cursor:pointer;pointer-events:auto;`);u.type="button",u.textContent="\xD7",u.setAttribute("aria-label","Close"),u.setAttribute("data-metaai-file-viewer-close","");const h=y("img","display:block;flex:0 1 auto;min-height:0;max-width:100%;max-height:100%;object-fit:contain;border-radius:4px;");h.alt=e,h.addEventListener("error",()=>{const t=y("p","margin:0;font:400 15px/1.4 system-ui,sans-serif;text-align:center;");t.textContent="This file cannot be shown here.",h.replaceWith(t)},{once:!0}),h.src=t,a.append(u,h),a.addEventListener("cancel",t=>{Reflect.apply(i,t,[]),l?.root===a&&w()}),a.addEventListener("close",()=>{l?.root===a&&w()}),l={root:a,opener:n,before:r},document.body.append(a),c&&a.showModal(),u.focus({preventScroll:!0})}o(A,"showViewer");function F(t,e,r){const i=new AbortController;Reflect.apply(n,window,[t.href,{signal:i.signal}]).then(n=>{i.abort(),n.ok?window.location.assign(t.href):A(t.href,e,r)},()=>A(t.href,e,r))}o(F,"download");function C(t,e,n){T(t)?S(t)?F(t,e,n):A(t.href,e,n):M(t)?window.location.hash=t.hash:N()}o(C,"openOutside");function _(n,r){let i=null,c=0,f=n.href;const a=o(e=>{try{const n=p(String(e));if(n===null){i!==null&&l===i&&w(),i=null,c=0,Reflect.apply(t,window,[String(e)]);return}const a=l;C(n,"",r),i=l!==a?l:null,c=i===null?Date.now()+x:0,f=n.href}catch{}},"go"),u={get href(){return f},set href(t){a(t)},assign:a,replace:a,reload(){},toString:o(()=>f,"toString")};return a(n.href),{opener:null,get closed(){return i!==null?l!==i:Date.now()>=c},get location(){return u},set location(t){a(t)},focus(){},blur(){},close(){i!==null&&l===i&&w(),i=null,c=0},postMessage(){},addEventListener(){},removeEventListener(){}}}o(_,"standIn");function B(t){if(l===null)return!1;const e=t.relatedTarget;return t.composedPath().includes(l.root)||e instanceof Node&&l.root.contains(e)}o(B,"insideViewer");function I(t){const e=[...l.root.querySelectorAll("button, a[href]")],n=e.indexOf(document.activeElement);(t.shiftKey?e[n<=0?e.length-1:n-1]:e[n<0||n===e.length-1?0:n+1])?.focus()}o(I,"moveFocus");function U(t){try{if(l!==null&&!l.root.isConnected&&(l=null),l===null){t.type==="focusin"&&t.target instanceof Element&&s[s.length-1]!==t.target&&(s.push(t.target),s.length>5&&s.shift());return}if(t.type==="keydown"&&(t.key==="Escape"||t.key==="Tab")){Reflect.apply(i,t,[]),Reflect.apply(f,t,[]),t.key==="Escape"?w():I(t);return}if(!B(t)||(Reflect.apply(f,t,[]),t.type!=="click"))return;if(t.detail>1){Reflect.apply(i,t,[]);return}const e=t.target;(e===l.root||e instanceof Element&&e.closest("[data-metaai-file-viewer-close]"))&&w()}catch{}}o(U,"shield");function $(t,e){return t instanceof HTMLInputElement?/^(checkbox|radio|file|color)$/.test(t.type)||/^(submit|reset|image)$/.test(t.type)&&t.form!==null:t instanceof HTMLButtonElement?t.type!=="button"&&t.form!==null:t instanceof HTMLLabelElement?t.control!==null&&!t.control.contains(e):t instanceof HTMLMediaElement?t.controls:t instanceof HTMLElement&&t.tagName==="SUMMARY"&&t.parentElement?.tagName==="DETAILS"}o($,"ownClickAction");function j(t){for(const e of t){if(e instanceof Element&&e.matches("a[href], area[href]"))return e;if($(e,t[0]))return null}return null}o(j,"anchorFor");function V(t){const e=g.get(t);if(!(e===void 0||e.held)){g.delete(t);try{if(e.host.removeEventListener(t.type,e.last),Reflect.apply(a,t,[]))return;e.done=!0,Reflect.apply(i,t,[]),C(e.url,e.label,e.opener)}catch{}}}o(V,"decide");function z(t){const e=g.get(t);if(e!==void 0){g.delete(t);try{e.host.removeEventListener(t.type,e.last),e.held&&!e.appCancelled&&C(e.url,e.label,e.opener)}catch{}}}o(z,"settle");function K(t,n){const r=[];for(const i of t)try{const t=i[n];if(typeof t!="function"||E.has(t))continue;const c=o(function(...e){const n=Reflect.apply(t,this,e),r=n===!1?g.get(e[0]):void 0;return r&&(r.appCancelled=!0),n},"wrapper");E.add(c),i[n]=c,r.push(()=>{i[n]===c&&(i[n]=t)})}catch{}return()=>r.forEach(t=>t())}o(K,"watchHandlers");function L(t,n,r,h,x,E){const s={url:n,label:r,opener:h,host:x,held:!1,done:!1,appCancelled:!1,last:null};s.last=e=>{e===t&&V(t)},g.set(t,s),x.addEventListener(t.type,s.last);const l=K(E,`on${t.type}`),b=o(()=>{l(),z(t)},"end");window.setTimeout(b,0);const m=o(()=>{s.held||s.done||g.get(t)!==s||(s.held=!0,Reflect.apply(a,t,[])?s.appCancelled=!0:Reflect.apply(i,t,[]))},"hold"),d=o(t=>s.held||s.done?s.appCancelled:Reflect.apply(a,t,[]),"appView"),p=o((e,n)=>Object.defineProperty(t,e,{configurable:!0,...n}),"define");return p("stopPropagation",{writable:!0,value(){return m(),Reflect.apply(c,this,arguments)}}),p("stopImmediatePropagation",{writable:!0,value(){return m(),Reflect.apply(f,this,arguments)}}),p("preventDefault",{writable:!0,value(){return s.appCancelled=!0,Reflect.apply(i,this,arguments)}}),p("defaultPrevented",{get(){return d(this)}}),p("returnValue",{get(){return!d(this)},set(t){t||(s.appCancelled=!0,Reflect.apply(i,this,[]))}}),u?.get&&u.set&&p("cancelBubble",{get(){return Reflect.apply(u.get,this,[])},set(t){t&&m(),Reflect.apply(u.set,this,[t])}}),b}o(L,"track");function v(t){try{if(!t.cancelable||t.button!==(t.type==="auxclick"?1:0))return;const e=t.composedPath(),n=j(e);if(!n||n.hasAttribute("download")||n.isContentEditable||!t.bubbles&&e[0]!==n)return;const r=p(n.getAttribute("href"));if(r===null)return;(t.type==="auxclick"||t.ctrlKey||t.metaKey||t.shiftKey||k(n.getAttribute("target")||""))&&L(t,r,R(n),n,t.bubbles?window:n,e)}catch{}}o(v,"remember");try{for(const t of["pointerdown","pointerup","mousedown","mouseup","touchstart","touchend","click","auxclick","dblclick","focusin","focusout","keydown","keyup"])window.addEventListener(t,U,!0);window.addEventListener("click",v,!0),window.addEventListener("auxclick",v,!0),window.open=o(function(n,r){try{const t=r==null?"":String(r);if(t.trim()===""||k(t)){const t=p(n==null?"":String(n));if(t!==null)return _(t,document.activeElement)}}catch{}return Reflect.apply(t,this,arguments)},"open"),HTMLAnchorElement.prototype.click=o(function(){try{if(!this.isConnected&&!this.hasAttribute("download")){const t=p(this.getAttribute("href"));if(t!==null&&k(this.getAttribute("target")||"")){const e=new MouseEvent("click",{bubbles:!0,cancelable:!0,composed:!0,view:window}),n=[];for(let t=this;t!==null;t=t.parentNode)n.push(t);const r=L(e,t,R(this),document.activeElement,this.getRootNode(),n);this.dispatchEvent(e),r();return}}}catch{}return Reflect.apply(r,this,arguments)},"click")}catch{}})();})();
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>React Artifact</title>
+  <script>(function installDevicePermissionRuntime() {
+  if (window.parent === window)
+    return;
+  let parentOrigin;
+  try {
+    const embeddingOrigin = window.location.ancestorOrigins?.[0] || document.referrer, { hostname, origin, port, protocol } = new URL(embeddingOrigin), supportedHost = hostname === "meta.ai" || hostname === "ecto1.ai" || [".meta.ai", ".ecto1.ai", ".internalfb.com", ".hatch.club"].some((suffix) => hostname.endsWith(suffix));
+    if (hostname === "localhost" && (protocol === "http:" || protocol === "https:") || protocol === "https:" && port === "" && supportedHost)
+      parentOrigin = origin;
+  } catch {
+    return;
+  }
+  if (!parentOrigin)
+    return;
+  function request(capability) {
+    try {
+      const policy = document.permissionsPolicy || document.featurePolicy;
+      if (navigator.userActivation?.isActive === !0 && policy?.allowsFeature(capability) === !1)
+        window.parent.postMessage({ type: "ecto:artifact-device-permission-request", version: 1, capability }, parentOrigin);
+    } catch {}
+  }
+  function hasAudio(constraints) {
+    for (let value = constraints;value != null; value = Object.getPrototypeOf(value)) {
+      const descriptor = Object.getOwnPropertyDescriptor(value, "audio");
+      if (descriptor)
+        return Boolean(descriptor.value);
+    }
+    return !1;
+  }
+  function wrap(receiver, name, capability, enabled) {
+    try {
+      if ((document.permissionsPolicy || document.featurePolicy)?.allowsFeature(capability) !== !1)
+        return;
+      const native = receiver?.[name];
+      if (typeof native !== "function")
+        return;
+      receiver[name] = function() {
+        try {
+          if (this === receiver && enabled(arguments))
+            request(capability);
+        } catch {}
+        return Reflect.apply(native, this, arguments);
+      };
+    } catch {}
+  }
+  wrap(navigator.mediaDevices, "getUserMedia", "microphone", (args) => hasAudio(args[0]));
+  const hasPositionCallback = (args) => typeof args[0] === "function";
+  wrap(navigator.geolocation, "getCurrentPosition", "geolocation", hasPositionCallback);
+  wrap(navigator.geolocation, "watchPosition", "geolocation", hasPositionCallback);
+})();</script>
+  <style>@import url('https://fonts.googleapis.com/css2?family=Gulzar&family=Noto+Naskh+Arabic:wght@400;500;600;700&family=Scheherazade+New:wght@400;500;700&display=swap');
+
+*, ::before, ::after{
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+::backdrop{
+  --tw-border-spacing-x: 0;
+  --tw-border-spacing-y: 0;
+  --tw-translate-x: 0;
+  --tw-translate-y: 0;
+  --tw-rotate: 0;
+  --tw-skew-x: 0;
+  --tw-skew-y: 0;
+  --tw-scale-x: 1;
+  --tw-scale-y: 1;
+  --tw-pan-x:  ;
+  --tw-pan-y:  ;
+  --tw-pinch-zoom:  ;
+  --tw-scroll-snap-strictness: proximity;
+  --tw-gradient-from-position:  ;
+  --tw-gradient-via-position:  ;
+  --tw-gradient-to-position:  ;
+  --tw-ordinal:  ;
+  --tw-slashed-zero:  ;
+  --tw-numeric-figure:  ;
+  --tw-numeric-spacing:  ;
+  --tw-numeric-fraction:  ;
+  --tw-ring-inset:  ;
+  --tw-ring-offset-width: 0px;
+  --tw-ring-offset-color: #fff;
+  --tw-ring-color: rgb(59 130 246 / 0.5);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
+  --tw-shadow: 0 0 #0000;
+  --tw-shadow-colored: 0 0 #0000;
+  --tw-blur:  ;
+  --tw-brightness:  ;
+  --tw-contrast:  ;
+  --tw-grayscale:  ;
+  --tw-hue-rotate:  ;
+  --tw-invert:  ;
+  --tw-saturate:  ;
+  --tw-sepia:  ;
+  --tw-drop-shadow:  ;
+  --tw-backdrop-blur:  ;
+  --tw-backdrop-brightness:  ;
+  --tw-backdrop-contrast:  ;
+  --tw-backdrop-grayscale:  ;
+  --tw-backdrop-hue-rotate:  ;
+  --tw-backdrop-invert:  ;
+  --tw-backdrop-opacity:  ;
+  --tw-backdrop-saturate:  ;
+  --tw-backdrop-sepia:  ;
+  --tw-contain-size:  ;
+  --tw-contain-layout:  ;
+  --tw-contain-paint:  ;
+  --tw-contain-style:  ;
+}
+
+/*
+! tailwindcss v3.4.18 | MIT License | https://tailwindcss.com
+*/
+
+/*
+1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
+2. Allow adding a border to an element by just adding a border-width. (https://github.com/tailwindcss/tailwindcss/pull/116)
+*/
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  /* 1 */
+  border-width: 0;
+  /* 2 */
+  border-style: solid;
+  /* 2 */
+  border-color: #e5e7eb;
+  /* 2 */
+}
+
+::before,
+::after {
+  --tw-content: '';
+}
+
+/*
+1. Use a consistent sensible line-height in all browsers.
+2. Prevent adjustments of font size after orientation changes in iOS.
+3. Use a more readable tab size.
+4. Use the user's configured `sans` font-family by default.
+5. Use the user's configured `sans` font-feature-settings by default.
+6. Use the user's configured `sans` font-variation-settings by default.
+7. Disable tap highlights on iOS
+*/
+
+html,
+:host {
+  line-height: 1.5;
+  /* 1 */
+  -webkit-text-size-adjust: 100%;
+  /* 2 */
+  -moz-tab-size: 4;
+  /* 3 */
+  -o-tab-size: 4;
+     tab-size: 4;
+  /* 3 */
+  font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  /* 4 */
+  font-feature-settings: normal;
+  /* 5 */
+  font-variation-settings: normal;
+  /* 6 */
+  -webkit-tap-highlight-color: transparent;
+  /* 7 */
+}
+
+/*
+1. Remove the margin in all browsers.
+2. Inherit line-height from `html` so users can set them as a class directly on the `html` element.
+*/
+
+body {
+  margin: 0;
+  /* 1 */
+  line-height: inherit;
+  /* 2 */
+}
+
+/*
+1. Add the correct height in Firefox.
+2. Correct the inheritance of border color in Firefox. (https://bugzilla.mozilla.org/show_bug.cgi?id=190655)
+3. Ensure horizontal rules are visible by default.
+*/
+
+hr {
+  height: 0;
+  /* 1 */
+  color: inherit;
+  /* 2 */
+  border-top-width: 1px;
+  /* 3 */
+}
+
+/*
+Add the correct text decoration in Chrome, Edge, and Safari.
+*/
+
+abbr:where([title]) {
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+}
+
+/*
+Remove the default font size and weight for headings.
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/*
+Reset links to optimize for opt-in styling instead of opt-out.
+*/
+
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+/*
+Add the correct font weight in Edge and Safari.
+*/
+
+b,
+strong {
+  font-weight: bolder;
+}
+
+/*
+1. Use the user's configured `mono` font-family by default.
+2. Use the user's configured `mono` font-feature-settings by default.
+3. Use the user's configured `mono` font-variation-settings by default.
+4. Correct the odd `em` font sizing in all browsers.
+*/
+
+code,
+kbd,
+samp,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  /* 1 */
+  font-feature-settings: normal;
+  /* 2 */
+  font-variation-settings: normal;
+  /* 3 */
+  font-size: 1em;
+  /* 4 */
+}
+
+/*
+Add the correct font size in all browsers.
+*/
+
+small {
+  font-size: 80%;
+}
+
+/*
+Prevent `sub` and `sup` elements from affecting the line height in all browsers.
+*/
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+sup {
+  top: -0.5em;
+}
+
+/*
+1. Remove text indentation from table contents in Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=999088, https://bugs.webkit.org/show_bug.cgi?id=201297)
+2. Correct table border color inheritance in all Chrome and Safari. (https://bugs.chromium.org/p/chromium/issues/detail?id=935729, https://bugs.webkit.org/show_bug.cgi?id=195016)
+3. Remove gaps between table borders by default.
+*/
+
+table {
+  text-indent: 0;
+  /* 1 */
+  border-color: inherit;
+  /* 2 */
+  border-collapse: collapse;
+  /* 3 */
+}
+
+/*
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+3. Remove default padding in all browsers.
+*/
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  /* 1 */
+  font-feature-settings: inherit;
+  /* 1 */
+  font-variation-settings: inherit;
+  /* 1 */
+  font-size: 100%;
+  /* 1 */
+  font-weight: inherit;
+  /* 1 */
+  line-height: inherit;
+  /* 1 */
+  letter-spacing: inherit;
+  /* 1 */
+  color: inherit;
+  /* 1 */
+  margin: 0;
+  /* 2 */
+  padding: 0;
+  /* 3 */
+}
+
+/*
+Remove the inheritance of text transform in Edge and Firefox.
+*/
+
+button,
+select {
+  text-transform: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Remove default button styles.
+*/
+
+button,
+input:where([type='button']),
+input:where([type='reset']),
+input:where([type='submit']) {
+  -webkit-appearance: button;
+  /* 1 */
+  background-color: transparent;
+  /* 2 */
+  background-image: none;
+  /* 2 */
+}
+
+/*
+Use the modern Firefox focus style for all focusable elements.
+*/
+
+:-moz-focusring {
+  outline: auto;
+}
+
+/*
+Remove the additional `:invalid` styles in Firefox. (https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737)
+*/
+
+:-moz-ui-invalid {
+  box-shadow: none;
+}
+
+/*
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+
+progress {
+  vertical-align: baseline;
+}
+
+/*
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+  height: auto;
+}
+
+/*
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+
+[type='search'] {
+  -webkit-appearance: textfield;
+  /* 1 */
+  outline-offset: -2px;
+  /* 2 */
+}
+
+/*
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+
+::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+/*
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to `inherit` in Safari.
+*/
+
+::-webkit-file-upload-button {
+  -webkit-appearance: button;
+  /* 1 */
+  font: inherit;
+  /* 2 */
+}
+
+/*
+Add the correct display in Chrome and Safari.
+*/
+
+summary {
+  display: list-item;
+}
+
+/*
+Removes the default spacing and border for appropriate elements.
+*/
+
+blockquote,
+dl,
+dd,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+figure,
+p,
+pre {
+  margin: 0;
+}
+
+fieldset {
+  margin: 0;
+  padding: 0;
+}
+
+legend {
+  padding: 0;
+}
+
+ol,
+ul,
+menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+Reset default styling for dialogs.
+*/
+
+dialog {
+  padding: 0;
+}
+
+/*
+Prevent resizing textareas horizontally by default.
+*/
+
+textarea {
+  resize: vertical;
+}
+
+/*
+1. Reset the default placeholder opacity in Firefox. (https://github.com/tailwindlabs/tailwindcss/issues/3300)
+2. Set the default placeholder color to the user's configured gray 400 color.
+*/
+
+input::-moz-placeholder, textarea::-moz-placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+input::placeholder,
+textarea::placeholder {
+  opacity: 1;
+  /* 1 */
+  color: #9ca3af;
+  /* 2 */
+}
+
+/*
+Set the default cursor for buttons.
+*/
+
+button,
+[role="button"] {
+  cursor: pointer;
+}
+
+/*
+Make sure disabled buttons don't get the pointer cursor.
+*/
+
+:disabled {
+  cursor: default;
+}
+
+/*
+1. Make replaced elements `display: block` by default. (https://github.com/mozdevs/cssremedy/issues/14)
+2. Add `vertical-align: middle` to align replaced elements more sensibly by default. (https://github.com/jensimmons/cssremedy/issues/14#issuecomment-634934210)
+   This can trigger a poorly considered lint error in some tools but is included by design.
+*/
+
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+  /* 1 */
+  vertical-align: middle;
+  /* 2 */
+}
+
+/*
+Constrain images and videos to the parent width and preserve their intrinsic aspect ratio. (https://github.com/mozdevs/cssremedy/issues/14)
+*/
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Make elements with the HTML hidden attribute stay hidden by default */
+
+[hidden]:where(:not([hidden="until-found"])) {
+  display: none;
+}
+
+.sr-only{
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.pointer-events-none{
+  pointer-events: none;
+}
+
+.fixed{
+  position: fixed;
+}
+
+.absolute{
+  position: absolute;
+}
+
+.relative{
+  position: relative;
+}
+
+.inset-0{
+  inset: 0px;
+}
+
+.-left-10{
+  left: -2.5rem;
+}
+
+.-right-8{
+  right: -2rem;
+}
+
+.-top-10{
+  top: -2.5rem;
+}
+
+.bottom-3{
+  bottom: 0.75rem;
+}
+
+.left-0{
+  left: 0px;
+}
+
+.left-2{
+  left: 0.5rem;
+}
+
+.left-3{
+  left: 0.75rem;
+}
+
+.right-2{
+  right: 0.5rem;
+}
+
+.right-3{
+  right: 0.75rem;
+}
+
+.top-0{
+  top: 0px;
+}
+
+.top-16{
+  top: 4rem;
+}
+
+.top-2{
+  top: 0.5rem;
+}
+
+.top-3{
+  top: 0.75rem;
+}
+
+.z-50{
+  z-index: 50;
+}
+
+.-mx-4{
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+
+.mx-auto{
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ml-0\.5{
+  margin-left: 0.125rem;
+}
+
+.ml-1{
+  margin-left: 0.25rem;
+}
+
+.mt-1{
+  margin-top: 0.25rem;
+}
+
+.mt-2{
+  margin-top: 0.5rem;
+}
+
+.mt-3{
+  margin-top: 0.75rem;
+}
+
+.mt-4{
+  margin-top: 1rem;
+}
+
+.mt-6{
+  margin-top: 1.5rem;
+}
+
+.mt-8{
+  margin-top: 2rem;
+}
+
+.block{
+  display: block;
+}
+
+.flex{
+  display: flex;
+}
+
+.inline-flex{
+  display: inline-flex;
+}
+
+.table{
+  display: table;
+}
+
+.grid{
+  display: grid;
+}
+
+.h-1\.5{
+  height: 0.375rem;
+}
+
+.h-11{
+  height: 2.75rem;
+}
+
+.h-16{
+  height: 4rem;
+}
+
+.h-3\.5{
+  height: 0.875rem;
+}
+
+.h-32{
+  height: 8rem;
+}
+
+.h-4{
+  height: 1rem;
+}
+
+.h-40{
+  height: 10rem;
+}
+
+.h-5{
+  height: 1.25rem;
+}
+
+.h-7{
+  height: 1.75rem;
+}
+
+.h-\[118px\]{
+  height: 118px;
+}
+
+.h-\[220px\]{
+  height: 220px;
+}
+
+.h-\[76px\]{
+  height: 76px;
+}
+
+.min-h-screen{
+  min-height: 100vh;
+}
+
+.w-11{
+  width: 2.75rem;
+}
+
+.w-16{
+  width: 4rem;
+}
+
+.w-3\.5{
+  width: 0.875rem;
+}
+
+.w-32{
+  width: 8rem;
+}
+
+.w-4{
+  width: 1rem;
+}
+
+.w-40{
+  width: 10rem;
+}
+
+.w-5{
+  width: 1.25rem;
+}
+
+.w-7{
+  width: 1.75rem;
+}
+
+.w-\[168px\]{
+  width: 168px;
+}
+
+.w-\[76px\]{
+  width: 76px;
+}
+
+.w-full{
+  width: 100%;
+}
+
+.min-w-\[540px\]{
+  min-width: 540px;
+}
+
+.max-w-\[300px\]{
+  max-width: 300px;
+}
+
+.max-w-\[420px\]{
+  max-width: 420px;
+}
+
+.max-w-\[560px\]{
+  max-width: 560px;
+}
+
+.max-w-full{
+  max-width: 100%;
+}
+
+.shrink-0{
+  flex-shrink: 0;
+}
+
+.border-collapse{
+  border-collapse: collapse;
+}
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.resize-none{
+  resize: none;
+}
+
+.grid-cols-2{
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.flex-col{
+  flex-direction: column;
+}
+
+.items-start{
+  align-items: flex-start;
+}
+
+.items-end{
+  align-items: flex-end;
+}
+
+.items-center{
+  align-items: center;
+}
+
+.justify-center{
+  justify-content: center;
+}
+
+.justify-between{
+  justify-content: space-between;
+}
+
+.gap-1{
+  gap: 0.25rem;
+}
+
+.gap-1\.5{
+  gap: 0.375rem;
+}
+
+.gap-2{
+  gap: 0.5rem;
+}
+
+.gap-3{
+  gap: 0.75rem;
+}
+
+.overflow-hidden{
+  overflow: hidden;
+}
+
+.overflow-x-auto{
+  overflow-x: auto;
+}
+
+.overflow-x-clip{
+  overflow-x: clip;
+}
+
+.rounded-\[20px\]{
+  border-radius: 20px;
+}
+
+.rounded-\[22px\]{
+  border-radius: 22px;
+}
+
+.rounded-\[23px\]{
+  border-radius: 23px;
+}
+
+.rounded-\[24px\]{
+  border-radius: 24px;
+}
+
+.rounded-\[26px\]{
+  border-radius: 26px;
+}
+
+.rounded-full{
+  border-radius: 9999px;
+}
+
+.rounded-xl{
+  border-radius: 0.75rem;
+}
+
+.rounded-b-\[28px\]{
+  border-bottom-right-radius: 28px;
+  border-bottom-left-radius: 28px;
+}
+
+.border{
+  border-width: 1px;
+}
+
+.border-b{
+  border-bottom-width: 1px;
+}
+
+.border-\[\#A855F7\]\/30{
+  border-color: rgb(168 85 247 / 0.3);
+}
+
+.border-\[\#A855F7\]\/60{
+  border-color: rgb(168 85 247 / 0.6);
+}
+
+.border-white\/10{
+  border-color: rgb(255 255 255 / 0.1);
+}
+
+.border-white\/15{
+  border-color: rgb(255 255 255 / 0.15);
+}
+
+.border-white\/40{
+  border-color: rgb(255 255 255 / 0.4);
+}
+
+.bg-\[\#06B6D4\]\/40{
+  background-color: rgb(6 182 212 / 0.4);
+}
+
+.bg-\[\#0B0B1A\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(11 11 26 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#12122B\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(18 18 43 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#16213E\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 33 62 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#1A1A2E\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(26 26 46 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#2A1A4A\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(42 26 74 / var(--tw-bg-opacity, 1));
+}
+
+.bg-\[\#A855F7\]\/15{
+  background-color: rgb(168 85 247 / 0.15);
+}
+
+.bg-\[\#EC4899\]\/40{
+  background-color: rgb(236 72 153 / 0.4);
+}
+
+.bg-black\/15{
+  background-color: rgb(0 0 0 / 0.15);
+}
+
+.bg-black\/20{
+  background-color: rgb(0 0 0 / 0.2);
+}
+
+.bg-black\/55{
+  background-color: rgb(0 0 0 / 0.55);
+}
+
+.bg-black\/60{
+  background-color: rgb(0 0 0 / 0.6);
+}
+
+.bg-black\/70{
+  background-color: rgb(0 0 0 / 0.7);
+}
+
+.bg-white{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+
+.bg-white\/10{
+  background-color: rgb(255 255 255 / 0.1);
+}
+
+.bg-white\/20{
+  background-color: rgb(255 255 255 / 0.2);
+}
+
+.bg-\[linear-gradient\(135deg\2c \#7C3AED_0\%\2c \#A855F7_28\%\2c \#3B82F6_58\%\2c \#06B6D4_82\%\2c \#EC4899_100\%\)\]{
+  background-image: linear-gradient(135deg,#7C3AED 0%,#A855F7 28%,#3B82F6 58%,#06B6D4 82%,#EC4899 100%);
+}
+
+.bg-\[linear-gradient\(90deg\2c \#7C3AED\2c \#06B6D4\)\]{
+  background-image: linear-gradient(90deg,#7C3AED,#06B6D4);
+}
+
+.bg-\[linear-gradient\(90deg\2c \#7C3AED\2c \#3B82F6\2c \#06B6D4\)\]{
+  background-image: linear-gradient(90deg,#7C3AED,#3B82F6,#06B6D4);
+}
+
+.bg-\[linear-gradient\(90deg\2c \#7C3AED\2c \#A855F7\2c \#3B82F6\2c \#06B6D4\)\]{
+  background-image: linear-gradient(90deg,#7C3AED,#A855F7,#3B82F6,#06B6D4);
+}
+
+.bg-\[linear-gradient\(90deg\2c \#A855F7\2c \#EC4899\2c \#3B82F6\)\]{
+  background-image: linear-gradient(90deg,#A855F7,#EC4899,#3B82F6);
+}
+
+.bg-\[linear-gradient\(90deg\2c rgba\(124\2c 58\2c 237\2c \.35\)\2c rgba\(6\2c 182\2c 212\2c \.35\)\)\]{
+  background-image: linear-gradient(90deg,rgba(124,58,237,.35),rgba(6,182,212,.35));
+}
+
+.fill-current{
+  fill: currentColor;
+}
+
+.p-3{
+  padding: 0.75rem;
+}
+
+.p-4{
+  padding: 1rem;
+}
+
+.p-\[1\.5px\]{
+  padding: 1.5px;
+}
+
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-2\.5{
+  padding-left: 0.625rem;
+  padding-right: 0.625rem;
+}
+
+.px-3{
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.px-4{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-5{
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.py-0\.5{
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+}
+
+.py-1{
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-1\.5{
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.py-2{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-2\.5{
+  padding-top: 0.625rem;
+  padding-bottom: 0.625rem;
+}
+
+.py-3{
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-3\.5{
+  padding-top: 0.875rem;
+  padding-bottom: 0.875rem;
+}
+
+.pb-2{
+  padding-bottom: 0.5rem;
+}
+
+.pb-3{
+  padding-bottom: 0.75rem;
+}
+
+.pb-6{
+  padding-bottom: 1.5rem;
+}
+
+.pb-8{
+  padding-bottom: 2rem;
+}
+
+.pt-2\.5{
+  padding-top: 0.625rem;
+}
+
+.pt-5{
+  padding-top: 1.25rem;
+}
+
+.text-center{
+  text-align: center;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.text-\[10px\]{
+  font-size: 10px;
+}
+
+.text-\[11px\]{
+  font-size: 11px;
+}
+
+.text-\[12px\]{
+  font-size: 12px;
+}
+
+.text-\[13px\]{
+  font-size: 13px;
+}
+
+.text-\[14px\]{
+  font-size: 14px;
+}
+
+.text-\[15px\]{
+  font-size: 15px;
+}
+
+.text-\[16px\]{
+  font-size: 16px;
+}
+
+.text-\[17px\]{
+  font-size: 17px;
+}
+
+.text-\[20px\]{
+  font-size: 20px;
+}
+
+.text-\[22px\]{
+  font-size: 22px;
+}
+
+.text-\[24px\]{
+  font-size: 24px;
+}
+
+.text-\[26px\]{
+  font-size: 26px;
+}
+
+.text-\[34px\]{
+  font-size: 34px;
+}
+
+.text-\[64px\]{
+  font-size: 64px;
+}
+
+.text-\[clamp\(30px\2c 8vw\2c 38px\)\]{
+  font-size: clamp(30px,8vw,38px);
+}
+
+.text-\[clamp\(44px\2c 13vw\2c 60px\)\]{
+  font-size: clamp(44px,13vw,60px);
+}
+
+.font-bold{
+  font-weight: 700;
+}
+
+.leading-10{
+  line-height: 2.5rem;
+}
+
+.leading-5{
+  line-height: 1.25rem;
+}
+
+.leading-6{
+  line-height: 1.5rem;
+}
+
+.leading-7{
+  line-height: 1.75rem;
+}
+
+.leading-8{
+  line-height: 2rem;
+}
+
+.leading-9{
+  line-height: 2.25rem;
+}
+
+.leading-\[1\.35\]{
+  line-height: 1.35;
+}
+
+.leading-\[1\.4\]{
+  line-height: 1.4;
+}
+
+.leading-none{
+  line-height: 1;
+}
+
+.tracking-wide{
+  letter-spacing: 0.025em;
+}
+
+.text-\[\#7C3AED\]{
+  --tw-text-opacity: 1;
+  color: rgb(124 58 237 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#B8BBDD\]{
+  --tw-text-opacity: 1;
+  color: rgb(184 187 221 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#C084FC\]{
+  --tw-text-opacity: 1;
+  color: rgb(192 132 252 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#C7C9E8\]{
+  --tw-text-opacity: 1;
+  color: rgb(199 201 232 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#E9D5FF\]{
+  --tw-text-opacity: 1;
+  color: rgb(233 213 255 / var(--tw-text-opacity, 1));
+}
+
+.text-\[\#F1F0FF\]{
+  --tw-text-opacity: 1;
+  color: rgb(241 240 255 / var(--tw-text-opacity, 1));
+}
+
+.text-\[var\(--cream\)\]{
+  color: var(--cream);
+}
+
+.text-white{
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}
+
+.text-white\/85{
+  color: rgb(255 255 255 / 0.85);
+}
+
+.text-white\/90{
+  color: rgb(255 255 255 / 0.9);
+}
+
+.accent-\[\#A855F7\]{
+  accent-color: #A855F7;
+}
+
+.opacity-40{
+  opacity: 0.4;
+}
+
+.opacity-90{
+  opacity: 0.9;
+}
+
+.shadow-\[0_10px_24px_rgba\(0\2c 0\2c 0\2c \.35\)\]{
+  --tw-shadow: 0 10px 24px rgba(0,0,0,.35);
+  --tw-shadow-colored: 0 10px 24px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_10px_24px_rgba\(124\2c 58\2c 237\2c \.45\)\]{
+  --tw-shadow: 0 10px 24px rgba(124,58,237,.45);
+  --tw-shadow-colored: 0 10px 24px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_10px_30px_rgba\(124\2c 58\2c 237\2c \.45\)\]{
+  --tw-shadow: 0 10px 30px rgba(124,58,237,.45);
+  --tw-shadow-colored: 0 10px 30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_10px_30px_rgba\(236\2c 72\2c 153\2c \.40\)\]{
+  --tw-shadow: 0 10px 30px rgba(236,72,153,.40);
+  --tw-shadow-colored: 0 10px 30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_12px_30px_rgba\(0\2c 0\2c 0\2c \.30\)\]{
+  --tw-shadow: 0 12px 30px rgba(0,0,0,.30);
+  --tw-shadow-colored: 0 12px 30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_12px_30px_rgba\(0\2c 0\2c 0\2c \.35\)\]{
+  --tw-shadow: 0 12px 30px rgba(0,0,0,.35);
+  --tw-shadow-colored: 0 12px 30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_12px_30px_rgba\(0\2c 0\2c 0\2c \.4\)\]{
+  --tw-shadow: 0 12px 30px rgba(0,0,0,.4);
+  --tw-shadow-colored: 0 12px 30px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_16px_40px_rgba\(0\2c 0\2c 0\2c \.40\)\]{
+  --tw-shadow: 0 16px 40px rgba(0,0,0,.40);
+  --tw-shadow-colored: 0 16px 40px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_16px_40px_rgba\(0\2c 0\2c 0\2c \.45\)\]{
+  --tw-shadow: 0 16px 40px rgba(0,0,0,.45);
+  --tw-shadow-colored: 0 16px 40px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_20px_60px_rgba\(124\2c 58\2c 237\2c \.45\)\]{
+  --tw-shadow: 0 20px 60px rgba(124,58,237,.45);
+  --tw-shadow-colored: 0 20px 60px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_24px_60px_rgba\(0\2c 0\2c 0\2c \.6\)\]{
+  --tw-shadow: 0 24px 60px rgba(0,0,0,.6);
+  --tw-shadow-colored: 0 24px 60px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[0_8px_24px_rgba\(124\2c 58\2c 237\2c \.55\)\]{
+  --tw-shadow: 0 8px 24px rgba(124,58,237,.55);
+  --tw-shadow-colored: 0 8px 24px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-\[inset_0_0_0_2px_\#A855F7\]{
+  --tw-shadow: inset 0 0 0 2px #A855F7;
+  --tw-shadow-colored: inset 0 0 0 2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.outline-none{
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.blur-2xl{
+  --tw-blur: blur(40px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.drop-shadow-\[0_10px_24px_rgba\(0\2c 0\2c 0\2c \.4\)\]{
+  --tw-drop-shadow: drop-shadow(0 10px 24px rgba(0,0,0,.4));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.drop-shadow-\[0_4px_18px_rgba\(0\2c 0\2c 0\2c \.35\)\]{
+  --tw-drop-shadow: drop-shadow(0 4px 18px rgba(0,0,0,.35));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.drop-shadow-\[0_6px_16px_rgba\(0\2c 0\2c 0\2c \.35\)\]{
+  --tw-drop-shadow: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+.backdrop-blur-md{
+  --tw-backdrop-blur: blur(12px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.backdrop-blur-sm{
+  --tw-backdrop-blur: blur(4px);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+.transition{
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+:root {
+  --bg: #0B0B1A;
+  --bg-2: #12122B;
+  --bg-3: #1A1A2E;
+  --violet: #7C3AED;
+  --purple: #A855F7;
+  --blue: #3B82F6;
+  --cyan: #06B6D4;
+  --pink: #EC4899;
+  --cream: #F1F0FF;
+  --cream-2: #17172F;
+  --mint: #C7C9E8;
+  --ink: #F1F0FF;
+  --muted: #B8BBDD;
+  --surface: #17172F;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0B0B1A;
+    --bg-2: #12122B;
+    --surface: #17172F;
   }
 }
 
-</script>
-</body></html>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--cream);
+  font-family: 'Noto Naskh Arabic', 'Scheherazade New', 'Gulzar', serif;
+  line-height: 2.1;
+}
+
+button, input, textarea {
+  font-family: inherit;
+}
+
+::-moz-selection {
+  background: #A855F7;
+  color: #fff;
+}
+
+::selection {
+  background: #A855F7;
+  color: #fff;
+}
+
+.sindhi-display {
+  font-family: 'Scheherazade New', 'Noto Naskh Arabic', 'Gulzar', serif;
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+@keyframes revealPop {
+  0% {
+    opacity: 0;
+    transform: scale(.72) translateY(4px);
+    filter: blur(4px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes shimmerLine {
+  0% {
+    transform: translateX(110%);
+  }
+
+  100% {
+    transform: translateX(-110%);
+  }
+}
+
+@keyframes pulseAi {
+  0% {
+    box-shadow: 0 0 0 0 rgba(168,85,247,.55);
+  }
+
+  100% {
+    box-shadow: 0 0 0 14px rgba(168,85,247,0);
+  }
+}
+
+@keyframes gradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes glowPulse {
+  0%, 100% {
+    opacity: .55;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.reveal-pop {
+  animation: revealPop .38s cubic-bezier(.2,.9,.3,1.3) both;
+}
+
+.float-soft {
+  animation: floatSoft 3.2s ease-in-out infinite;
+}
+
+.pulse-ai {
+  animation: pulseAi 1.6s ease-out infinite;
+}
+
+.ai-animated {
+  background-size: 220% 220%;
+  animation: gradientFlow 7s ease-in-out infinite;
+}
+
+.ai-glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+.ai-strip {
+  background: linear-gradient(90deg, #7C3AED, #A855F7, #3B82F6, #06B6D4, #EC4899, #A855F7);
+  background-size: 220% 100%;
+  animation: gradientFlow 6s ease-in-out infinite;
+}
+
+.ai-gradient-text {
+  background: linear-gradient(90deg, #C084FC, #60A5FA, #22D3EE, #F472B6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass {
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  backdrop-filter: blur(14px);
+}
+
+.glass-strong {
+  background: rgba(23,23,47,.82);
+  border: 1px solid rgba(255,255,255,.14);
+  backdrop-filter: blur(16px);
+}
+
+.shimmer-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 45%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.22), transparent);
+  animation: shimmerLine 2.2s infinite;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.placeholder\:text-\[\#9AA0C7\]::-moz-placeholder{
+  --tw-text-opacity: 1;
+  color: rgb(154 160 199 / var(--tw-text-opacity, 1));
+}
+
+.placeholder\:text-\[\#9AA0C7\]::placeholder{
+  --tw-text-opacity: 1;
+  color: rgb(154 160 199 / var(--tw-text-opacity, 1));
+}
+
+.hover\:border-\[\#A855F7\]\/60:hover{
+  border-color: rgb(168 85 247 / 0.6);
+}
+
+.focus\:border-\[\#A855F7\]:focus{
+  --tw-border-opacity: 1;
+  border-color: rgb(168 85 247 / var(--tw-border-opacity, 1));
+}
+
+.focus\:ring-2:focus{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-\[\#A855F7\]\/50:focus{
+  --tw-ring-color: rgb(168 85 247 / 0.5);
+}
+
+.active\:scale-\[\.98\]:active{
+  --tw-scale-x: .98;
+  --tw-scale-y: .98;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.disabled\:opacity-60:disabled{
+  opacity: 0.6;
+}
+
+@media (min-width: 640px){
+  .sm\:-mx-5{
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+  }
+
+  .sm\:items-center{
+    align-items: center;
+  }
+
+  .sm\:bg-\[\#1A1A2E\]{
+    --tw-bg-opacity: 1;
+    background-color: rgb(26 26 46 / var(--tw-bg-opacity, 1));
+  }
+
+  .sm\:px-5{
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .sm\:px-6{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px){
+  .lg\:grid-cols-5{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+</style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="module">var ic=Object.create;var{getPrototypeOf:sc,defineProperty:Wl,getOwnPropertyNames:ac}=Object;var fc=Object.prototype.hasOwnProperty;var $e=(e,t,n)=>{n=e!=null?ic(sc(e)):{};let r=t||!e||!e.__esModule?Wl(n,"default",{value:e,enumerable:!0}):n;for(let l of ac(e))if(!fc.call(r,l))Wl(r,l,{get:()=>e[l],enumerable:!0});return r};var Sr=(e,t)=>()=>(t||e((t={exports:{}}).exports,t),t.exports);var cc=(e,t)=>{for(var n in t)Wl(e,n,{get:t[n],enumerable:!0,configurable:!0,set:(r)=>t[n]=()=>r})};var dc=(e,t)=>()=>(e&&(t=e(e=0)),t);var St=Sr((zc)=>{var yn=Symbol.for("react.element"),pc=Symbol.for("react.portal"),mc=Symbol.for("react.fragment"),hc=Symbol.for("react.strict_mode"),vc=Symbol.for("react.profiler"),yc=Symbol.for("react.provider"),gc=Symbol.for("react.context"),wc=Symbol.for("react.forward_ref"),Sc=Symbol.for("react.suspense"),kc=Symbol.for("react.memo"),Ec=Symbol.for("react.lazy"),hi=Symbol.iterator;function Cc(e){if(e===null||typeof e!=="object")return null;return e=hi&&e[hi]||e["@@iterator"],typeof e==="function"?e:null}var gi={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}},wi=Object.assign,Si={};function Ut(e,t,n){this.props=e,this.context=t,this.refs=Si,this.updater=n||gi}Ut.prototype.isReactComponent={};Ut.prototype.setState=function(e,t){if(typeof e!=="object"&&typeof e!=="function"&&e!=null)throw Error("setState(...): takes an object of state variables to update or a function which returns an object of state variables.");this.updater.enqueueSetState(this,e,t,"setState")};Ut.prototype.forceUpdate=function(e){this.updater.enqueueForceUpdate(this,e,"forceUpdate")};function ki(){}ki.prototype=Ut.prototype;function Yl(e,t,n){this.props=e,this.context=t,this.refs=Si,this.updater=n||gi}var Xl=Yl.prototype=new ki;Xl.constructor=Yl;wi(Xl,Ut.prototype);Xl.isPureReactComponent=!0;var vi=Array.isArray,Ei=Object.prototype.hasOwnProperty,Gl={current:null},Ci={key:!0,ref:!0,__self:!0,__source:!0};function _i(e,t,n){var r,l={},u=null,o=null;if(t!=null)for(r in t.ref!==void 0&&(o=t.ref),t.key!==void 0&&(u=""+t.key),t)Ei.call(t,r)&&!Ci.hasOwnProperty(r)&&(l[r]=t[r]);var i=arguments.length-2;if(i===1)l.children=n;else if(1<i){for(var s=Array(i),f=0;f<i;f++)s[f]=arguments[f+2];l.children=s}if(e&&e.defaultProps)for(r in i=e.defaultProps,i)l[r]===void 0&&(l[r]=i[r]);return{$$typeof:yn,type:e,key:u,ref:o,props:l,_owner:Gl.current}}function _c(e,t){return{$$typeof:yn,type:e.type,key:t,ref:e.ref,props:e.props,_owner:e._owner}}function Zl(e){return typeof e==="object"&&e!==null&&e.$$typeof===yn}function xc(e){var t={"=":"=0",":":"=2"};return"$"+e.replace(/[=:]/g,function(n){return t[n]})}var yi=/\/+/g;function Kl(e,t){return typeof e==="object"&&e!==null&&e.key!=null?xc(""+e.key):t.toString(36)}function Er(e,t,n,r,l){var u=typeof e;if(u==="undefined"||u==="boolean")e=null;var o=!1;if(e===null)o=!0;else switch(u){case"string":case"number":o=!0;break;case"object":switch(e.$$typeof){case yn:case pc:o=!0}}if(o)return o=e,l=l(o),e=r===""?"."+Kl(o,0):r,vi(l)?(n="",e!=null&&(n=e.replace(yi,"$&/")+"/"),Er(l,t,n,"",function(f){return f})):l!=null&&(Zl(l)&&(l=_c(l,n+(!l.key||o&&o.key===l.key?"":(""+l.key).replace(yi,"$&/")+"/")+e)),t.push(l)),1;if(o=0,r=r===""?".":r+":",vi(e))for(var i=0;i<e.length;i++){u=e[i];var s=r+Kl(u,i);o+=Er(u,t,n,s,l)}else if(s=Cc(e),typeof s==="function")for(e=s.call(e),i=0;!(u=e.next()).done;)u=u.value,s=r+Kl(u,i++),o+=Er(u,t,n,s,l);else if(u==="object")throw t=String(e),Error("Objects are not valid as a React child (found: "+(t==="[object Object]"?"object with keys {"+Object.keys(e).join(", ")+"}":t)+"). If you meant to render a collection of children, use an array instead.");return o}function kr(e,t,n){if(e==null)return e;var r=[],l=0;return Er(e,r,"","",function(u){return t.call(n,u,l++)}),r}function Nc(e){if(e._status===-1){var t=e._result;t=t(),t.then(function(n){if(e._status===0||e._status===-1)e._status=1,e._result=n},function(n){if(e._status===0||e._status===-1)e._status=2,e._result=n}),e._status===-1&&(e._status=0,e._result=t)}if(e._status===1)return e._result.default;throw e._result}var re={current:null},Cr={transition:null},Pc={ReactCurrentDispatcher:re,ReactCurrentBatchConfig:Cr,ReactCurrentOwner:Gl};function xi(){throw Error("act(...) is not supported in production builds of React.")}zc.Children={map:kr,forEach:function(e,t,n){kr(e,function(){t.apply(this,arguments)},n)},count:function(e){var t=0;return kr(e,function(){t++}),t},toArray:function(e){return kr(e,function(t){return t})||[]},only:function(e){if(!Zl(e))throw Error("React.Children.only expected to receive a single React element child.");return e}};zc.Component=Ut;zc.Fragment=mc;zc.Profiler=vc;zc.PureComponent=Yl;zc.StrictMode=hc;zc.Suspense=Sc;zc.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED=Pc;zc.act=xi;zc.cloneElement=function(e,t,n){if(e===null||e===void 0)throw Error("React.cloneElement(...): The argument must be a React element, but you passed "+e+".");var r=wi({},e.props),l=e.key,u=e.ref,o=e._owner;if(t!=null){if(t.ref!==void 0&&(u=t.ref,o=Gl.current),t.key!==void 0&&(l=""+t.key),e.type&&e.type.defaultProps)var i=e.type.defaultProps;for(s in t)Ei.call(t,s)&&!Ci.hasOwnProperty(s)&&(r[s]=t[s]===void 0&&i!==void 0?i[s]:t[s])}var s=arguments.length-2;if(s===1)r.children=n;else if(1<s){i=Array(s);for(var f=0;f<s;f++)i[f]=arguments[f+2];r.children=i}return{$$typeof:yn,type:e.type,key:l,ref:u,props:r,_owner:o}};zc.createContext=function(e){return e={$$typeof:gc,_currentValue:e,_currentValue2:e,_threadCount:0,Provider:null,Consumer:null,_defaultValue:null,_globalName:null},e.Provider={$$typeof:yc,_context:e},e.Consumer=e};zc.createElement=_i;zc.createFactory=function(e){var t=_i.bind(null,e);return t.type=e,t};zc.createRef=function(){return{current:null}};zc.forwardRef=function(e){return{$$typeof:wc,render:e}};zc.isValidElement=Zl;zc.lazy=function(e){return{$$typeof:Ec,_payload:{_status:-1,_result:e},_init:Nc}};zc.memo=function(e,t){return{$$typeof:kc,type:e,compare:t===void 0?null:t}};zc.startTransition=function(e){var t=Cr.transition;Cr.transition={};try{e()}finally{Cr.transition=t}};zc.unstable_act=xi;zc.useCallback=function(e,t){return re.current.useCallback(e,t)};zc.useContext=function(e){return re.current.useContext(e)};zc.useDebugValue=function(){};zc.useDeferredValue=function(e){return re.current.useDeferredValue(e)};zc.useEffect=function(e,t){return re.current.useEffect(e,t)};zc.useId=function(){return re.current.useId()};zc.useImperativeHandle=function(e,t,n){return re.current.useImperativeHandle(e,t,n)};zc.useInsertionEffect=function(e,t){return re.current.useInsertionEffect(e,t)};zc.useLayoutEffect=function(e,t){return re.current.useLayoutEffect(e,t)};zc.useMemo=function(e,t){return re.current.useMemo(e,t)};zc.useReducer=function(e,t,n){return re.current.useReducer(e,t,n)};zc.useRef=function(e){return re.current.useRef(e)};zc.useState=function(e){return re.current.useState(e)};zc.useSync
